@@ -124,11 +124,32 @@ public class GameManager : MonoBehaviour
         lineHolder.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         lineHolder.gameObject.name = "LineHolder";
 
+        List<HashSet<BoardNode>> allConnections = new();
+
         foreach (Node node in _nodes.Values)
         {
             for (int i = 0; i < node.ConnectionDirections.Count; i++)
             {
-                //TODO figure out a way to exclude double lines
+                HashSet<BoardNode> connectedBoardNodes = new()
+                {
+                    node.BoardNode,
+                    _nodes[node.BoardCoordinate + node.ConnectionDirections[i]].BoardNode
+                };
+
+                bool contains = false;
+                for (int j = allConnections.Count - 1; j >= 0; j--)
+                {
+                    if (allConnections[j].SetEquals(connectedBoardNodes))
+                    {
+                        contains = true;
+                        break;
+                    }
+                }
+
+                allConnections.Add(connectedBoardNodes);
+
+                if (contains)
+                    continue;
 
                 var line = Instantiate(_linePrefab, lineHolder.transform);
                 line.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
