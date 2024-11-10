@@ -5,8 +5,9 @@ using UnityEngine;
 public class BoardNode : MonoBehaviour
 {
     [SerializeField] private GameEventEmitter _emitter;
+    [field: SerializeField] public SpriteRenderer SpriteRenderer { get; private set; }
 
-    private Node _node;
+    [SerializeField]private Node _node;
     private List<BoardLine> _boardLines;
 
     public Node Node { get => _node; }
@@ -22,20 +23,22 @@ public class BoardNode : MonoBehaviour
     }
 }
 
-
+[System.Serializable]
 public class Node
 {
-    public Vector2Int BoardCoordinate { get; private set; }
+    [field:SerializeField]public Vector2Int BoardCoordinate { get; private set; }
+    [field:SerializeField]public List<Vector2Int> ConnectionDirections { get; private set; }
     public int RingIndex { get; private set; }
     public BoardNode BoardNode { get; private set; }
     public PlayerPiece Piece { get; private set; }
     public HashSet<Node> NeighboringNodes { get; private set; }
 
-    public Node(Vector2Int boardCoordinate, BoardNode boardNode, int ringIndex)
+    public Node(Vector2Int boardCoordinate, BoardNode boardNode, int ringIndex, List<Vector2Int> connectionDirections)
     {
         BoardCoordinate = boardCoordinate;
         BoardNode = boardNode;
         RingIndex = ringIndex;
+        ConnectionDirections = connectionDirections;
     }
 
     public void PlacePiece(PlayerPiece piece)

@@ -15,5 +15,13 @@ public class BoardLine : MonoBehaviour
 
         _lineRenderer.SetPosition(0, _boardNodes[0].transform.position);
         _lineRenderer.SetPosition(1, _boardNodes[1].transform.position);
+
+        UpdateLineColor();
+    }
+
+    public void UpdateLineColor()
+    {
+        _lineRenderer.startColor = _boardNodes[0].SpriteRenderer.color;
+        _lineRenderer.endColor = _boardNodes[1].SpriteRenderer.color;
     }
 }
