@@ -8,18 +8,21 @@ public abstract class BaseGameState
     {
         _gameManager = gameManager;
         _gameData = gameData;
-        _gameStateType = gameStateType;
+        StateType = gameStateType;
     }
 
     protected GameManager _gameManager;
     protected GameData _gameData;
-    protected GameStateType _gameStateType;
+
+    public GameStateType StateType;
 
     public abstract void OnStateEnter();
 
     public abstract void OnStateExit();
 
     public abstract void ProcessNodeClick(NodeMessage nodeMessage);
+
+    public abstract void SwitchState();
 }
 
 public enum GameStateType { None = 0, Placing = 1, Moving = 2, Removing = 3 }

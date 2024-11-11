@@ -11,18 +11,70 @@ public class GameStateMoving : BaseGameState
 
     public override void OnStateEnter()
     {
-        throw new System.NotImplementedException();
+        string message;
+
+        if (_gameManager.SelectedPiece == null)
+            message = $"{_gameManager.CurrentPlayer}, pick one of your pieces to move";
+        else
+            message = $"{_gameManager.CurrentPlayer}, place the selected piece on one of the available spots";
+
+        _gameManager.DisplayNotification(message);
     }
 
     public override void OnStateExit()
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void ProcessNodeClick(NodeMessage nodeMessage)
     {
+        //null check
+        if (!nodeMessage.Node.IsOccupied() && _gameManager.SelectedPiece == null)
+            return;
+
+        //check if the selected piece can move to the selected position
+        if (!CanMovePieceToNode(nodeMessage.Node))
+        {
+            string message = $"You cannot place your piece on an occupied spot!";
+            _gameManager.DisplayNotification(message);
+            return;
+        }
+
         //if node is empty, move piece to node
+        if (!nodeMessage.Node.IsOccupied())
+        {
+            _gameManager.SelectedPiece.Node.RemovePiece();
+            nodeMessage.Node.PlacePiece(_gameManager.SelectedPiece);
+
+            //check for mills
+            if (_gameManager.IsMill(nodeMessage.Node))
+            {
+                _gameManager.ChangeState(GameStateType.Removing);
+                return;
+            }
+            else
+            {
+                SwitchState();
+            }
+        }
 
         //else show error message
+    }
+
+    public override void SwitchState()
+    {
+        _gameManager.SelectedPiece = null;
+
+        //check for opponent legal moves
+        //if legal moves exist
+        _gameManager.SwitchPlayerTurn();
+        OnStateEnter();
+        //else
+        //TODO determine winner
+    }
+
+    private bool CanMovePieceToNode(Node node)
+    {
+        return !node.IsOccupied() && (node.IsNeighbor(_gameManager.SelectedPiece.Node) || _gameData.EnablePiecesAlwaysFly);
     }
 }
