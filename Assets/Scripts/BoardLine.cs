@@ -6,12 +6,17 @@ public class BoardLine : MonoBehaviour
 {
     [SerializeField] private LineRenderer _lineRenderer;
 
-    private BoardNode[] _boardNodes = new BoardNode[2];
+    [SerializeField]private BoardNode[] _boardNodes = new BoardNode[2];
+
+    public BoardNode[] BoardNodes=> _boardNodes;
 
     public void SetupBoardLine(BoardNode firstNode, BoardNode secondNode)
     {
         _boardNodes[0] = firstNode;
         _boardNodes[1] = secondNode;
+
+        firstNode.BoardLines.Add(this);
+        secondNode.BoardLines.Add(this);
 
         _lineRenderer.SetPosition(0, _boardNodes[0].transform.position);
         _lineRenderer.SetPosition(1, _boardNodes[1].transform.position);

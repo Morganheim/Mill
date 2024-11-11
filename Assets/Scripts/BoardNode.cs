@@ -8,9 +8,10 @@ public class BoardNode : MonoBehaviour
     [field: SerializeField] public SpriteRenderer SpriteRenderer { get; private set; }
 
     [SerializeField]private Node _node;
-    private List<BoardLine> _boardLines;
+    private List<BoardLine> _boardLines = new();
 
     public Node Node { get => _node; }
+    public List<BoardLine> BoardLines { get => _boardLines; set => _boardLines = value; }
 
     public void SetupBoardNode(Node node)
     {
@@ -20,6 +21,14 @@ public class BoardNode : MonoBehaviour
     public void OnClick()
     {
         _emitter.Emit(new NodeMessage("OnNodeClicked", _node));
+    }
+
+    public void UpdateColor(Color color)
+    {
+        SpriteRenderer.color = color;
+
+        foreach (var boardLine in _boardLines)
+            boardLine.UpdateLineColor();
     }
 }
 
@@ -44,6 +53,9 @@ public class Node
     public void PlacePiece(PlayerPiece piece)
     {
         Piece = piece;
+        piece.PlacePiece(this);
+
+        BoardNode.UpdateColor(piece.Owner.PieceColor);
     }
 
     public void RemovePiece()
@@ -54,11 +66,23 @@ public class Node
             return;
         }
 
+        Piece.RemovePiece();
         Piece = null;
+
+        BoardNode.UpdateColor(Color.white);
     }
 
     public bool IsOccupied()
     {
         return Piece != null;
+    }
+
+    public bool IsNeighbor(Node node)
+    {
+        foreach (var coordinateDirection in ConnectionDirections)
+            if (BoardCoordinate + coordinateDirection == node.BoardCoordinate)
+                return true;
+
+        return false;
     }
 }
