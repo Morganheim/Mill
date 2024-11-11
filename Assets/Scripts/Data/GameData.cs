@@ -7,4 +7,6 @@ public class GameData : ScriptableObject
 {
     [field: SerializeField] public int PositionOffset { get; private set; }
     [field: SerializeField] public int RingsAmount { get; private set; }
+    [field: SerializeField] public bool EnableDiagonalLines { get; private set; }
+    [field: SerializeField] public bool EnablePiecesAlwaysFly { get; private set; }
 }
