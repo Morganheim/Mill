@@ -30,6 +30,22 @@ public class GameManager : MonoBehaviour
         GameInit();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            for (int i = 0; i < CurrentPlayer.Mills.Count; i++)
+            {
+                string message = $"Mill {i} nodes: ";
+                foreach (var node in CurrentPlayer.Mills[i])
+                {
+                    message += $"\n{node.BoardCoordinate}";
+                }
+                Debug.Log(message);
+            }
+        }
+    }
+
     /**************************************** EVENT CALLBACKS ****************************************/
     public void OnNodeClicked(GameEventMessage gameEventMessage)
     {
@@ -117,6 +133,11 @@ public class GameManager : MonoBehaviour
         return flag;
     }
 
+    public bool CanMovePieceToNode(PlayerPiece piece, Node node)
+    {
+        return !node.IsOccupied() && (node.IsNeighbor(piece.Node) || _gameData.EnablePiecesAlwaysFly);
+    }
+
     /**************************************** PRIVATE METHODS ****************************************/
     private void GameInit()
     {
@@ -145,6 +166,9 @@ public class GameManager : MonoBehaviour
 
     private bool IsNodeMovable(Node node)
     {
+        if (_gameData.EnablePiecesAlwaysFly)
+            return true;
+
         HashSet<Node> neighbors = _boardManager.GetNodeNeighbors(node);
 
         foreach (var neighbor in neighbors)

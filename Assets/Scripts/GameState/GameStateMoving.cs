@@ -78,9 +78,4 @@ public class GameStateMoving : BaseGameState
             b_GameManager.ChangeState(GameStateType.GameComplete);
         }
     }
-
-    private bool CanMovePieceToNode(Node node)
-    {
-        return !node.IsOccupied() && (node.IsNeighbor(_gameManager.SelectedPiece.Node) || _gameData.EnablePiecesAlwaysFly);
-    }
 }
