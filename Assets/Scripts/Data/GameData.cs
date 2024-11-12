@@ -9,4 +9,5 @@ public class GameData : ScriptableObject
     [field: SerializeField] public int RingsAmount { get; private set; }
     [field: SerializeField] public bool EnableDiagonalLines { get; private set; }
     [field: SerializeField] public bool EnablePiecesAlwaysFly { get; private set; }
+    [field: SerializeField, Range(1, 100)] public int NotificationTypeSpeed { get; private set; }
 }
