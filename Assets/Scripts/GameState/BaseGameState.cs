@@ -25,4 +25,4 @@ public abstract class BaseGameState
     public abstract void SwitchState();
 }
 
-public enum GameStateType { None = 0, Placing = 1, Moving = 2, Removing = 3 }
+public enum GameStateType { None = 0, Placing = 1, Moving = 2, Removing = 3, GameComplete = 4 }

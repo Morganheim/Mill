@@ -37,13 +37,14 @@ public class GameStateRemoving : BaseGameState
                 else
                 {
                     //destroy piece
-                    nodeMessage.Node.RemovePiece();
+                    nodeMessage.Node.RemovePiece(true);
 
-                    //TODO check victory condition
-                    //if true, complete game
+                    //check game complete
+                    if (!_gameManager.IsGameComplete())
+                        SwitchState();
+                    else
+                        _gameManager.ChangeState(GameStateType.GameComplete);
 
-                    //else
-                    SwitchState();
                 }
             }
             //else if node is occupied by player, show error message "cannot remove your own pieces"

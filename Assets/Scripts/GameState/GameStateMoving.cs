@@ -65,12 +65,16 @@ public class GameStateMoving : BaseGameState
     {
         _gameManager.SelectedPiece = null;
 
-        //check for opponent legal moves
-        //if legal moves exist
-        _gameManager.SwitchPlayerTurn();
-        OnStateEnter();
-        //else
-        //TODO determine winner
+        //check game complete
+        if (!_gameManager.IsGameComplete())
+        {
+            _gameManager.SwitchPlayerTurn();
+            _gameManager.ChangeState(StateType);
+        }
+        else
+        {
+            _gameManager.ChangeState(GameStateType.GameComplete);
+        }
     }
 
     private bool CanMovePieceToNode(Node node)

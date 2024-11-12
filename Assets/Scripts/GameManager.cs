@@ -1,14 +1,9 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     /**************************************** INSPECTOR VARIABLES ****************************************/
-    [Header("Debug")]
-    public GameStateType currentStateType;
-
-
     [Header("Data")]
     [SerializeField] private GameData _gameData;
     [SerializeField] private PlayerData _player1;
@@ -25,6 +20,7 @@ public class GameManager : MonoBehaviour
     /**************************************** PROPERTIES ****************************************/
     public PlayerData CurrentPlayer { get; private set; }
     public PlayerData OpponentPlayer { get => CurrentPlayer == _player1 ? _player2 : _player1; }
+    public PlayerData WinnerPlayer { get; private set; }
     public PlayerPiece SelectedPiece { get; set; }
 
     /**************************************** UNITY CALLBACKS ****************************************/
@@ -70,10 +66,13 @@ public class GameManager : MonoBehaviour
     /**************************************** PUBLIC METHODS ****************************************/
     public void ChangeState(GameStateType stateType)
     {
+        GameStateType previousStateType = _currentState.StateType;
+
         _currentState.OnStateExit();
         _currentState = _gameStates[stateType];
         _currentState.OnStateEnter();
-        currentStateType = stateType;
+
+        _emitter.Emit(new GameStateMessage("OnGameStateChange", previousStateType, stateType, CurrentPlayer));
     }
 
     public void SwitchPlayerTurn()
@@ -81,14 +80,19 @@ public class GameManager : MonoBehaviour
         CurrentPlayer = OpponentPlayer;
     }
 
-    public void CheckGameComplete()
+    public bool IsGameComplete()
     {
-        //lose conditions
-        //2 pieces left on board and no more to place
-        //no legal moves
+        if (IsLoseCondition() || IsDrawCondition())
+        {
+            //display game over screen
 
-        //draw conditions
-        //no legal moves for both players
+            //display winner if there is a winner
+            WinnerPlayer = IsDrawCondition() ? null : CurrentPlayer;
+
+            return true;
+        }
+
+        return false;
     }
 
     public void DisplayNotification(string message)
@@ -115,6 +119,7 @@ public class GameManager : MonoBehaviour
         _player2.InitPlayer();
 
         CurrentPlayer = _player1;
+        WinnerPlayer = null;
 
         SelectedPiece = null;
 
@@ -125,11 +130,12 @@ public class GameManager : MonoBehaviour
             {GameStateType.Placing, new GameStatePlacing(this, _gameData) },
             {GameStateType.Moving, new GameStateMoving(this, _gameData) },
             {GameStateType.Removing, new GameStateRemoving(this, _gameData) },
+            {GameStateType.GameComplete, new GameStateGameComplete(this, _gameData) },
         };
 
         _currentState = _gameStates[GameStateType.Placing];
         _currentState.OnStateEnter();
-        currentStateType = GameStateType.Placing;
+        _emitter.Emit(new GameStateMessage("OnGameStateChange", GameStateType.None, _currentState.StateType, CurrentPlayer));
     }
 
     private bool IsNodeMovable(Node node)
@@ -141,5 +147,55 @@ public class GameManager : MonoBehaviour
                 return true;
 
         return false;
+    }
+
+    private bool IsLoseCondition()
+    {
+        bool flag = true;
+
+        //2 pieces left on board and no more to place
+        //no legal moves
+        if (!OpponentPlayer.IsLoser())
+        {
+            foreach (var piece in OpponentPlayer.PlacedPieces)
+            {
+                if (IsNodeMovable(piece.Node))
+                {
+                    flag = false;
+                    break;
+                }
+            }
+        }
+
+        return flag;
+    }
+
+    private bool IsDrawCondition()
+    {
+        bool flag = true;
+
+        //no legal moves for both players
+        foreach (var piece in CurrentPlayer.PlacedPieces)
+        {
+            if (IsNodeMovable(piece.Node))
+            {
+                flag = false;
+                break;
+            }
+        }
+
+        if (flag)
+        {
+            foreach (var piece in OpponentPlayer.PlacedPieces)
+            {
+                if (IsNodeMovable(piece.Node))
+                {
+                    flag = false;
+                    break;
+                }
+            }
+        }
+
+        return flag;
     }
 }

@@ -76,6 +76,11 @@ public class PlayerData : ScriptableObject
         return false;
     }
 
+    public bool IsLoser()
+    {
+        return AvailablePieces.Count + PlacedPieces.Count < 3 && DestroyedPieces.Count > 0;
+    }
+
     public override string ToString()
     {
         return $"<color=#{ColorUtility.ToHtmlStringRGB(PieceColor)}>{PlayerName}</color>";
