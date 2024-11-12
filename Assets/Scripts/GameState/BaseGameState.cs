@@ -6,15 +6,16 @@ public abstract class BaseGameState
 {
     public BaseGameState(GameManager gameManager, GameData gameData, GameStateType gameStateType)
     {
-        _gameManager = gameManager;
-        _gameData = gameData;
+        b_GameManager = gameManager;
+        b_GameData = gameData;
         StateType = gameStateType;
     }
 
-    protected GameManager _gameManager;
-    protected GameData _gameData;
+    protected GameManager b_GameManager;
+    protected GameData b_GameData;
+    protected string b_Message;
 
-    public GameStateType StateType;
+    public GameStateType StateType { get; protected set; }
 
     public abstract void OnStateEnter();
 

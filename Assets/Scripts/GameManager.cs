@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         {
             if (nodeMessage.Node.Piece.Owner != CurrentPlayer)
             {
-                DisplayNotification($"No stealing, {CurrentPlayer}!");
+                DisplayTempNotification($"No stealing, {CurrentPlayer}!");
                 return;
             }
 
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
             //node has no legal moves, pick different node message
             else
             {
-                DisplayNotification($"Selected piece can't be moved, pick a different piece!");
+                DisplayTempNotification($"Selected piece can't be moved!\nPick a different piece!");
                 return;
             }
         }
@@ -97,7 +97,12 @@ public class GameManager : MonoBehaviour
 
     public void DisplayNotification(string message)
     {
-        _emitter.Emit(new StringMessage("OnDisplayNotificationRequested", message));
+        _emitter.Emit(new NotificationMessage("OnDisplayNotificationRequested", message));
+    }
+
+    public void DisplayTempNotification(string message)
+    {
+        _emitter.Emit(new NotificationMessage("OnTempNotificationRequested", message, _gameData.NotificationLifetime));
     }
 
     public bool IsMill(Node node)

@@ -11,8 +11,8 @@ public class GameStatePlacing : BaseGameState
 
     public override void OnStateEnter()
     {
-        string message = $"{_gameManager.CurrentPlayer}'s turn. Place a piece on the board.";
-        _gameManager.DisplayNotification(message);
+        b_Message = $"Place a piece on the board.";
+        b_GameManager.DisplayNotification(b_Message);
     }
 
     public override void OnStateExit()
@@ -26,14 +26,14 @@ public class GameStatePlacing : BaseGameState
         if (!nodeMessage.Node.IsOccupied())
         {
             //occupy node
-            nodeMessage.Node.PlacePiece(_gameManager.CurrentPlayer.GetPiece());
+            nodeMessage.Node.PlacePiece(b_GameManager.CurrentPlayer.GetPiece());
 
             //TODO placing piece animation and effects
 
             //check for mill
-            if (_gameManager.IsMill(nodeMessage.Node))
+            if (b_GameManager.IsMill(nodeMessage.Node))
             {
-                _gameManager.ChangeState(GameStateType.Removing);
+                b_GameManager.ChangeState(GameStateType.Removing);
             }
             //no mill
             else
@@ -45,30 +45,30 @@ public class GameStatePlacing : BaseGameState
         //show error message
         else
         {
-            string message = $"Cannot place piece on already occupied spot! Choose an empty spot on the board!";
-            _gameManager.DisplayNotification(message);
+            b_Message = $"Cannot place the piece on an already occupied spot!\nChoose an empty spot on the board!";
+            b_GameManager.DisplayTempNotification(b_Message);
         }
 
     }
 
     public override void SwitchState()
     {
-        if (_gameManager.OpponentPlayer.AvailablePieces.Count > 0 || _gameManager.CurrentPlayer.AvailablePieces.Count > 0)
+        if (b_GameManager.OpponentPlayer.AvailablePieces.Count > 0 || b_GameManager.CurrentPlayer.AvailablePieces.Count > 0)
         {
             //check next player
-            if (_gameManager.OpponentPlayer.AvailablePieces.Count > 0)
-                _gameManager.SwitchPlayerTurn();
+            if (b_GameManager.OpponentPlayer.AvailablePieces.Count > 0)
+                b_GameManager.SwitchPlayerTurn();
 
             //display player turn message
-            _gameManager.ChangeState(GameStateType.Placing);
+            b_GameManager.ChangeState(GameStateType.Placing);
         }
         else
         {
             //switch player
-            _gameManager.SwitchPlayerTurn();
+            b_GameManager.SwitchPlayerTurn();
 
             //change game state to moving
-            _gameManager.ChangeState(GameStateType.Moving);
+            b_GameManager.ChangeState(GameStateType.Moving);
         }
     }
 }

@@ -11,14 +11,12 @@ public class GameStateMoving : BaseGameState
 
     public override void OnStateEnter()
     {
-        string message;
-
-        if (_gameManager.SelectedPiece == null)
-            message = $"{_gameManager.CurrentPlayer}, pick one of your pieces to move";
+        if (b_GameManager.SelectedPiece == null)
+            b_Message = $"Pick one of your own pieces to move.";
         else
-            message = $"{_gameManager.CurrentPlayer}, place the selected piece on one of the available spots";
+            b_Message = $"Place the selected piece on one of the available spots.";
 
-        _gameManager.DisplayNotification(message);
+        b_GameManager.DisplayNotification(b_Message);
     }
 
     public override void OnStateExit()
@@ -29,27 +27,31 @@ public class GameStateMoving : BaseGameState
     public override void ProcessNodeClick(NodeMessage nodeMessage)
     {
         //null check
-        if (!nodeMessage.Node.IsOccupied() && _gameManager.SelectedPiece == null)
+        if (!nodeMessage.Node.IsOccupied() && b_GameManager.SelectedPiece == null)
+        {
+            b_Message = $"That spot is empty!\nPick one of your own pieces to move!";
+            b_GameManager.DisplayTempNotification(b_Message);
             return;
+        }
 
         //check if the selected piece can move to the selected position
-        if (!CanMovePieceToNode(nodeMessage.Node))
+        if (!b_GameManager.CanMovePieceToNode(b_GameManager.SelectedPiece, nodeMessage.Node))
         {
-            string message = $"You cannot place your piece on an occupied spot!";
-            _gameManager.DisplayNotification(message);
+            b_Message = $"You cannot place the piece on an already occupied spot!";
+            b_GameManager.DisplayTempNotification(b_Message);
             return;
         }
 
         //if node is empty, move piece to node
         if (!nodeMessage.Node.IsOccupied())
         {
-            _gameManager.SelectedPiece.Node.RemovePiece();
-            nodeMessage.Node.PlacePiece(_gameManager.SelectedPiece);
+            b_GameManager.SelectedPiece.Node.RemovePiece();
+            nodeMessage.Node.PlacePiece(b_GameManager.SelectedPiece);
 
             //check for mills
-            if (_gameManager.IsMill(nodeMessage.Node))
+            if (b_GameManager.IsMill(nodeMessage.Node))
             {
-                _gameManager.ChangeState(GameStateType.Removing);
+                b_GameManager.ChangeState(GameStateType.Removing);
                 return;
             }
             else
@@ -63,17 +65,17 @@ public class GameStateMoving : BaseGameState
 
     public override void SwitchState()
     {
-        _gameManager.SelectedPiece = null;
+        b_GameManager.SelectedPiece = null;
 
         //check game complete
-        if (!_gameManager.IsGameComplete())
+        if (!b_GameManager.IsGameComplete())
         {
-            _gameManager.SwitchPlayerTurn();
-            _gameManager.ChangeState(StateType);
+            b_GameManager.SwitchPlayerTurn();
+            b_GameManager.ChangeState(StateType);
         }
         else
         {
-            _gameManager.ChangeState(GameStateType.GameComplete);
+            b_GameManager.ChangeState(GameStateType.GameComplete);
         }
     }
 

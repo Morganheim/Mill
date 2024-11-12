@@ -12,8 +12,9 @@ public class GameStateGameComplete : BaseGameState
     public override void OnStateEnter()
     {
         //evaluate win draw, display appropriate message
-        string message = $"Congrats, {_gameManager.WinnerPlayer}!! You win!";
-        _gameManager.DisplayNotification(message);
+
+        b_Message = $"Congrats, {b_GameManager.WinnerPlayer}!! You < color =#{ColorUtility.ToHtmlStringRGB(b_GameManager.CurrentPlayer.PieceColor)}>WIN!</color>!";
+        b_GameManager.DisplayNotification(b_Message);
     }
 
     public override void OnStateExit()
