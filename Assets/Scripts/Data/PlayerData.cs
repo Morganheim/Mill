@@ -7,21 +7,20 @@ public class PlayerData : ScriptableObject
 {
     [field: SerializeField] public string PlayerName { get; private set; }
     [field: SerializeField] public Color PieceColor { get; private set; }
-    [field: SerializeField] public int PiecesInitialAmount { get; private set; }
 
     public Queue<PlayerPiece> AvailablePieces { get; private set; } = new();
     public List<PlayerPiece> PlacedPieces { get; private set; } = new();
     public List<PlayerPiece> DestroyedPieces { get; private set; } = new();
     public List<HashSet<Node>> Mills { get; private set; } = new();
 
-    public void InitPlayer()
+    public void InitPlayer(int initialPiecesAmount)
     {
         AvailablePieces.Clear();
         PlacedPieces.Clear();
         DestroyedPieces.Clear();
         Mills.Clear();
 
-        for (int i = 0; i < PiecesInitialAmount; i++)
+        for (int i = 0; i < initialPiecesAmount; i++)
             AvailablePieces.Enqueue(new PlayerPiece(this));
     }
 

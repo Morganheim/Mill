@@ -6,8 +6,10 @@ using UnityEngine;
 public class GameData : ScriptableObject
 {
     [field: SerializeField] public int PositionOffset { get; private set; }
-    [field: SerializeField] public int RingsAmount { get; private set; }
+    [field: SerializeField, Range(1, 10)] public int RingsAmount { get; private set; }
+    [field: SerializeField, Range(3, 20)] public int PiecesInitialAmount { get; private set; }
     [field: SerializeField] public bool EnableDiagonalLines { get; private set; }
     [field: SerializeField] public bool EnablePiecesAlwaysFly { get; private set; }
-    [field: SerializeField, Range(1, 100)] public int NotificationTypeSpeed { get; private set; }
+    [field: SerializeField, Range(0.1f, 100)] public float NotificationTypeSpeed { get; private set; }
+    [field: SerializeField] public float NotificationLifetime { get; private set; }
 }

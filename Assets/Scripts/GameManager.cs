@@ -115,8 +115,8 @@ public class GameManager : MonoBehaviour
     /**************************************** PRIVATE METHODS ****************************************/
     private void GameInit()
     {
-        _player1.InitPlayer();
-        _player2.InitPlayer();
+        _player1.InitPlayer(_gameData.PiecesInitialAmount);
+        _player2.InitPlayer(_gameData.PiecesInitialAmount);
 
         CurrentPlayer = _player1;
         WinnerPlayer = null;

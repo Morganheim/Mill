@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <PositionOffset>k__BackingField: 2
   <RingsAmount>k__BackingField: 3
-  <EnableDiagonalLines>k__BackingField: 0
+  <PiecesInitialAmount>k__BackingField: 4
+  <EnableDiagonalLines>k__BackingField: 1
   <EnablePiecesAlwaysFly>k__BackingField: 0
-  <NotificationTypeSpeed>k__BackingField: 1
+  <NotificationTypeSpeed>k__BackingField: 75
+  <NotificationLifetime>k__BackingField: 4
