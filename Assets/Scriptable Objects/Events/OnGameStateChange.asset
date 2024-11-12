@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1240e9ec6b3a2d4385cb2a158317b41, type: 3}
-  m_Name: Player2Data
+  m_Script: {fileID: 11500000, guid: 5932e64cb7bb5c2449557d818ffa03c3, type: 3}
+  m_Name: OnGameStateChange
   m_EditorClassIdentifier: 
-  <PlayerName>k__BackingField: Player_2
-  <PieceColor>k__BackingField: {r: 0.19428623, g: 0.34973332, b: 0.6981132, a: 1}
-  <PiecesInitialAmount>k__BackingField: 3
+  _emitters: []
+  _listeners: []
