@@ -58,7 +58,7 @@ public class Node
         BoardNode.UpdateColor(piece.Owner.PieceColor);
     }
 
-    public void RemovePiece()
+    public void RemovePiece(bool isDestroyed = false)
     {
         if (Piece == null)
         {
@@ -66,7 +66,7 @@ public class Node
             return;
         }
 
-        Piece.RemovePiece();
+        Piece.RemovePiece(isDestroyed);
         Piece = null;
 
         BoardNode.UpdateColor(Color.white);

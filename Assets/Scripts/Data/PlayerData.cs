@@ -25,7 +25,7 @@ public class PlayerData : ScriptableObject
             AvailablePieces.Enqueue(new PlayerPiece(this));
     }
 
-    public void RemovePieceFromBoard(PlayerPiece piece, Node node)
+    public void RemovePieceFromBoard(PlayerPiece piece, Node node, bool isDestroyed = false)
     {
         if (piece == null || !PlacedPieces.Contains(piece))
             return;
@@ -33,8 +33,11 @@ public class PlayerData : ScriptableObject
         //removes cached mills that contained node
         RemoveMillsWithNode(node);
 
-        PlacedPieces.Remove(piece);
-        DestroyedPieces.Add(piece);
+        if (isDestroyed)
+        {
+            PlacedPieces.Remove(piece);
+            DestroyedPieces.Add(piece);
+        }
     }
 
     public PlayerPiece GetPiece()

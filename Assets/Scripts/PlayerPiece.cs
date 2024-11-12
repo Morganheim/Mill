@@ -17,9 +17,9 @@ public class PlayerPiece
         Node = node;
     }
 
-    public void RemovePiece()
+    public void RemovePiece(bool isDestroyed = false)
     {
-        Owner.RemovePieceFromBoard(this, Node);
+        Owner.RemovePieceFromBoard(this, Node, isDestroyed);
         Node = null;
     }
 }
