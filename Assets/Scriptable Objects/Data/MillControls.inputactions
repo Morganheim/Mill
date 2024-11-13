@@ -1,0 +1,54 @@
+{
+    "name": "MillControles",
+    "maps": [
+        {
+            "name": "GameMap",
+            "id": "a5d42448-f7c8-4fc7-8657-68c4faf2f0b6",
+            "actions": [
+                {
+                    "name": "PauseAction",
+                    "type": "Button",
+                    "id": "6d271f92-b30c-4457-8179-72ffbe7b8af7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UnselectPieceAction",
+                    "type": "Button",
+                    "id": "e0429838-1ae9-4b75-ac88-69607df3d063",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1a7d37d6-d182-488e-a659-203df690cdea",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1fffb53d-68bd-4f2f-95e2-06f7c77ef617",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UnselectPieceAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
