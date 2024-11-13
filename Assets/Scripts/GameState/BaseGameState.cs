@@ -4,14 +4,14 @@ using UnityEngine;
 
 public abstract class BaseGameState
 {
-    public BaseGameState(GameManager gameManager, GameData gameData, GameStateType gameStateType)
+    public BaseGameState(GameStateManager gameStateManager, GameData gameData, GameStateType gameStateType)
     {
-        b_GameManager = gameManager;
+        b_GameStateManager = gameStateManager;
         b_GameData = gameData;
         StateType = gameStateType;
     }
 
-    protected GameManager b_GameManager;
+    protected GameStateManager b_GameStateManager;
     protected GameData b_GameData;
     protected string b_Message;
 
@@ -21,9 +21,11 @@ public abstract class BaseGameState
 
     public abstract void OnStateExit();
 
-    public abstract void ProcessNodeClick(NodeMessage nodeMessage);
+    public abstract void ProcessNodeClick(Node node);
+
+    public abstract void ProcessNodeHover(bool isEnter, Node node);
 
     public abstract void SwitchState();
 }
 
-public enum GameStateType { None = 0, Placing = 1, Moving = 2, Removing = 3, GameComplete = 4 }
+public enum GameStateType { None = 0, Placing = 1, Moving = 2, Removing = 3, }

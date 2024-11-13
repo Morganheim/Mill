@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameStateRemoving : BaseGameState
 {
-    public GameStateRemoving(GameManager gameManager, GameData gameData) : base(gameManager, gameData, GameStateType.Removing)
+    public GameStateRemoving(GameStateManager gameStateManager, GameData gameData) : base(gameStateManager, gameData, GameStateType.Removing)
     {
 
     }
@@ -13,74 +13,118 @@ public class GameStateRemoving : BaseGameState
     {
 
         b_Message = $"Pick an opponent piece to destroy!";
-        b_GameManager.DisplayNotification(b_Message);
+        b_GameStateManager.DisplayNotification(b_Message);
+
+        //highlight all non-mill opponent piece holding nodes
+        foreach (var piece in b_GameStateManager.OpponentPlayer.PlacedPieces)
+            if (!b_GameStateManager.OpponentPlayer.IsNodePartOfAnActiveMill(piece.Node))
+                piece.Node.BoardNode.ToggleHighlight(true, b_GameStateManager.CurrentPlayer.PieceColor);
     }
 
     public override void OnStateExit()
     {
-        b_GameManager.SelectedPiece = null;
+        b_GameStateManager.SelectedPiece = null;
     }
 
-    public override void ProcessNodeClick(NodeMessage nodeMessage)
+    public override void ProcessNodeClick(Node node)
     {
-        if (nodeMessage.Node.IsOccupied())
+        if (node.IsOccupied())
         {
             //if node is occupied by opponent && is not in mill, remove piece
-            if (nodeMessage.Node.Piece.Owner != b_GameManager.CurrentPlayer)
+            if (node.Piece.Owner != b_GameStateManager.CurrentPlayer)
             {
-                if (b_GameManager.OpponentPlayer.IsNodePartOfAnActiveMill(nodeMessage.Node) && b_GameManager.OpponentPlayer.IsThereAPlacedNonMillPiece())
+                if (b_GameStateManager.OpponentPlayer.IsNodePartOfAnActiveMill(node) && b_GameStateManager.OpponentPlayer.IsThereAPlacedNonMillPiece())
                 {
                     b_Message = $"Cannot destroy that piece, it's part of a mill!";
-                    b_GameManager.DisplayTempNotification(b_Message);
+                    b_GameStateManager.DisplayTempNotification(b_Message);
                 }
                 else
                 {
                     //destroy piece
-                    nodeMessage.Node.RemovePiece(true);
+                    node.RemovePiece(true);
+
+                    foreach (var piece in b_GameStateManager.OpponentPlayer.PlacedPieces)
+                        if (!b_GameStateManager.OpponentPlayer.IsNodePartOfAnActiveMill(piece.Node))
+                            piece.Node.BoardNode.ToggleHighlight(false);
+
+                    node.BoardNode.ToggleHighlight(false);
 
                     //check game complete
-                    if (!b_GameManager.IsGameComplete())
+                    if (!b_GameStateManager.IsGameComplete())
                         SwitchState();
-                    else
-                        b_GameManager.ChangeState(GameStateType.GameComplete);
 
                 }
             }
             //else if node is occupied by player, show error message "cannot remove your own pieces"
             else
             {
-                b_Message = $"Destroy a <color=#{ColorUtility.ToHtmlStringRGB(b_GameManager.OpponentPlayer.PieceColor)}>{b_GameManager.OpponentPlayer.PieceColor}</color> piece! Not your own!";
-                b_GameManager.DisplayTempNotification(b_Message);
+                b_Message = $"Destroy <color=#{ColorUtility.ToHtmlStringRGB(b_GameStateManager.OpponentPlayer.PieceColor)}>{b_GameStateManager.OpponentPlayer}'s</color> piece! Not your own!";
+                b_GameStateManager.DisplayTempNotification(b_Message);
             }
         }
         //else, show error message for empty node
         else
         {
-            b_Message = $"That spot is empty!\nPick a spot holding your opponent's piece!";
-            b_GameManager.DisplayTempNotification(b_Message);
+            b_Message = $"That position is empty!\nPick a position holding your opponent's piece!";
+            b_GameStateManager.DisplayTempNotification(b_Message);
+        }
+    }
+
+    public override void ProcessNodeHover(bool isEnter, Node node)
+    {
+        bool toggle = false;
+        Color color = Color.white;
+
+        //hover enter
+        if (isEnter)
+        {
+            toggle = false;
+            color = new(node.BoardNode.SpriteRenderer.color.r, node.BoardNode.SpriteRenderer.color.g, node.BoardNode.SpriteRenderer.color.b);
+
+            if (node.IsOccupied() && node.Piece.Owner == b_GameStateManager.OpponentPlayer)
+            {
+                toggle = true;
+                color = Color.white;
+            }
+
+            if (toggle)
+                node.BoardNode.ToggleHighlight(toggle, color);
         }
 
+        //hover exit
+        else
+        {
+            toggle = false;
+            color = node.BoardNode.SpriteRenderer.color;
 
+            if (node.IsOccupied() && node.Piece.Owner == b_GameStateManager.OpponentPlayer)
+            {
+                toggle = true;
+                color = b_GameStateManager.CurrentPlayer.PieceColor;
+            }
+
+            node.BoardNode.ToggleHighlight(toggle, color);
+        }
     }
 
     public override void SwitchState()
     {
-        if (b_GameManager.OpponentPlayer.AvailablePieces.Count > 0 || b_GameManager.CurrentPlayer.AvailablePieces.Count > 0)
+        if (b_GameStateManager.OpponentPlayer.AvailablePieces.Count > 0 || b_GameStateManager.CurrentPlayer.AvailablePieces.Count > 0)
         {
             //check next player
-            if (b_GameManager.OpponentPlayer.AvailablePieces.Count > 0)
-                b_GameManager.SwitchPlayerTurn();
+            if (b_GameStateManager.OpponentPlayer.AvailablePieces.Count > 0)
+                b_GameStateManager.SwitchPlayerTurn();
 
             //display player turn message
-            b_GameManager.ChangeState(GameStateType.Placing);
+            b_GameStateManager.ChangeState(GameStateType.Placing);
         }
         else
         {
             //switch player
-            b_GameManager.SwitchPlayerTurn();
+            b_GameStateManager.SwitchPlayerTurn();
 
             //change game state to moving
-            b_GameManager.ChangeState(GameStateType.Moving);
+            b_GameStateManager.ChangeState(GameStateType.Moving);
         }
     }
 }

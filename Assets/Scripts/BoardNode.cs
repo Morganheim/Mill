@@ -5,13 +5,14 @@ using UnityEngine;
 public class BoardNode : MonoBehaviour
 {
     [SerializeField] private GameEventEmitter _emitter;
+    [SerializeField] private SpriteRenderer _highlight;
     [field: SerializeField] public SpriteRenderer SpriteRenderer { get; private set; }
 
-    [SerializeField]private Node _node;
-    private List<BoardLine> _boardLines = new();
+    private Node _node;
+    private readonly List<BoardLine> _boardLines = new();
 
-    public Node Node { get => _node; }
-    public List<BoardLine> BoardLines { get => _boardLines; set => _boardLines = value; }
+    public Node Node => _node;
+    public List<BoardLine> BoardLines => _boardLines;
 
     public void SetupBoardNode(Node node)
     {
@@ -23,20 +24,37 @@ public class BoardNode : MonoBehaviour
         _emitter.Emit(new NodeMessage("OnNodeClicked", _node));
     }
 
+    public void OnHoverEnter()
+    {
+        _emitter.Emit(new NodeMessage("OnNodeHoverEnter", _node));
+    }
+
+    public void OnHoverExit()
+    {
+        _emitter.Emit(new NodeMessage("OnNodeHoverExit", _node));
+    }
+
     public void UpdateColor(Color color)
     {
         SpriteRenderer.color = color;
-
+        _highlight.color = color;
         foreach (var boardLine in _boardLines)
             boardLine.UpdateLineColor();
     }
+
+    public void ToggleHighlight(bool isEnabled, Color color = default)
+    {
+        if (isEnabled)
+            _highlight.color = color;
+
+        _highlight.gameObject.SetActive(isEnabled);
+    }
 }
 
-[System.Serializable]
 public class Node
 {
-    [field:SerializeField]public Vector2Int BoardCoordinate { get; private set; }
-    [field:SerializeField]public List<Vector2Int> ConnectionDirections { get; private set; }
+    public Vector2Int BoardCoordinate { get; private set; }
+    public List<Vector2Int> ConnectionDirections { get; private set; }
     public int RingIndex { get; private set; }
     public BoardNode BoardNode { get; private set; }
     public PlayerPiece Piece { get; private set; }

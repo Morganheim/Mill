@@ -17,5 +17,6 @@ MonoBehaviour:
   <PiecesInitialAmount>k__BackingField: 4
   <EnableDiagonalLines>k__BackingField: 1
   <EnablePiecesAlwaysFly>k__BackingField: 0
-  <NotificationTypeSpeed>k__BackingField: 75
+  <NotificationTypeSpeed>k__BackingField: 50
   <NotificationLifetime>k__BackingField: 4
+  <OwnedNodeHighlightTransparency>k__BackingField: 0.432

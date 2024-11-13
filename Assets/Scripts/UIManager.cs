@@ -17,6 +17,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _millDisplayText;
     [SerializeField] private TextMeshProUGUI _gameStateDisplayText;
 
+    [Header("Pause Panel References")]
+
+
+    [Header("Game Complete Panel References")]
+    [SerializeField] private TextMeshProUGUI _gameOverNotificationText;
+
     private const string TURN_PREFIX = "Playing: ";
     private const string STATE_PREFIX = "Phase: ";
     private const string PIECES_PREFIX = "Pieces left: ";
@@ -44,8 +50,6 @@ public class UIManager : MonoBehaviour
         NotificationMessage notificationMessage = (NotificationMessage)gameEventMessage;
         if (notificationMessage == null)
             return;
-
-        _cachedNotification = _notificationDisplayText.text;
 
         if (_typingCoroutine != null)
             StopCoroutine(_typingCoroutine);
@@ -82,6 +86,24 @@ public class UIManager : MonoBehaviour
         StartCoroutine(TypeMessage(_millDisplayText, MILL_TEXT));
     }
 
+    public void OnGameComplete(GameEventMessage gameEventMessage)
+    {
+        GameCompleteMessage completeMessage = (GameCompleteMessage)gameEventMessage;
+        if (completeMessage == null)
+            return;
+
+        //palyer wins
+        if (completeMessage.WinnerPlayer != null)
+        {
+            _gameOverNotificationText.text = $"Congrats, {completeMessage.WinnerPlayer}!! You win!\nBetter luck next time, {completeMessage.LoserPlayer}";
+        }
+        //draw
+        else
+        {
+            _gameOverNotificationText.text = $"Draw! An even game indeed!\nHow about a rematch?";
+        }
+    }
+
     private IEnumerator TypeMessage(TextMeshProUGUI textUI, string message, float notificationLifetime = 0f)
     {
         textUI.text = "";
@@ -89,12 +111,12 @@ public class UIManager : MonoBehaviour
         float timeDelay = 1 / _gameData.NotificationTypeSpeed;
 
         WaitForSeconds typingDelay = new(timeDelay);
+        textUI.maxVisibleCharacters = 0;
+        textUI.text = message;
 
-        var chars = message.ToCharArray();
-
-        for (int i = 0; i < chars.Length; i++)
+        for (int i = 0; i < textUI.text.Length; i++)
         {
-            textUI.text += chars[i];
+            textUI.maxVisibleCharacters++;
             yield return typingDelay;
         }
 
@@ -102,13 +124,13 @@ public class UIManager : MonoBehaviour
         {
             yield return new WaitForSeconds(notificationLifetime);
 
-            textUI.text = "";
+            //textUI.text = "";
+            textUI.maxVisibleCharacters = 0;
+            textUI.text = _cachedNotification;
 
-            chars = _cachedNotification.ToCharArray();
-
-            for (int i = 0; i < chars.Length; i++)
+            for (int i = 0; i < textUI.text.Length; i++)
             {
-                textUI.text += chars[i];
+                textUI.maxVisibleCharacters++;
                 yield return typingDelay;
             }
         }

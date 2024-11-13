@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameStatePlacing : BaseGameState
 {
-    public GameStatePlacing(GameManager gameManager, GameData gameData) : base(gameManager, gameData, GameStateType.Placing)
+    public GameStatePlacing(GameStateManager gameStateManager, GameData gameData) : base(gameStateManager, gameData, GameStateType.Placing)
     {
 
     }
@@ -12,7 +12,7 @@ public class GameStatePlacing : BaseGameState
     public override void OnStateEnter()
     {
         b_Message = $"Place a piece on the board.";
-        b_GameManager.DisplayNotification(b_Message);
+        b_GameStateManager.DisplayNotification(b_Message);
     }
 
     public override void OnStateExit()
@@ -20,20 +20,22 @@ public class GameStatePlacing : BaseGameState
 
     }
 
-    public override void ProcessNodeClick(NodeMessage nodeMessage)
+    public override void ProcessNodeClick(Node node)
     {
         //place piece
-        if (!nodeMessage.Node.IsOccupied())
+        if (!node.IsOccupied())
         {
             //occupy node
-            nodeMessage.Node.PlacePiece(b_GameManager.CurrentPlayer.GetPiece());
+            node.PlacePiece(b_GameStateManager.CurrentPlayer.GetPiece());
+
+            node.BoardNode.ToggleHighlight(false);
 
             //TODO placing piece animation and effects
 
             //check for mill
-            if (b_GameManager.IsMill(nodeMessage.Node))
+            if (b_GameStateManager.IsMill(node))
             {
-                b_GameManager.ChangeState(GameStateType.Removing);
+                b_GameStateManager.ChangeState(GameStateType.Removing);
             }
             //no mill
             else
@@ -45,30 +47,55 @@ public class GameStatePlacing : BaseGameState
         //show error message
         else
         {
-            b_Message = $"Cannot place the piece on an already occupied spot!\nChoose an empty spot on the board!";
-            b_GameManager.DisplayTempNotification(b_Message);
+            b_Message = $"Cannot place the piece on an already occupied position!\nChoose an empty position on the board!";
+            b_GameStateManager.DisplayTempNotification(b_Message);
         }
 
     }
 
+    public override void ProcessNodeHover(bool isEnter, Node node)
+    {
+        bool toggle = false;
+        Color color = node.BoardNode.SpriteRenderer.color;
+
+        //hover enter
+        if (isEnter)
+        {
+            if (!node.IsOccupied())
+            {
+                toggle = true;
+                color = b_GameStateManager.CurrentPlayer.PieceColor;
+            }
+
+            if (toggle)
+                node.BoardNode.ToggleHighlight(toggle, color);
+        }
+
+        //hover exit
+        else
+        {
+            node.BoardNode.ToggleHighlight(false);
+        }
+    }
+
     public override void SwitchState()
     {
-        if (b_GameManager.OpponentPlayer.AvailablePieces.Count > 0 || b_GameManager.CurrentPlayer.AvailablePieces.Count > 0)
+        if (b_GameStateManager.OpponentPlayer.AvailablePieces.Count > 0 || b_GameStateManager.CurrentPlayer.AvailablePieces.Count > 0)
         {
             //check next player
-            if (b_GameManager.OpponentPlayer.AvailablePieces.Count > 0)
-                b_GameManager.SwitchPlayerTurn();
+            if (b_GameStateManager.OpponentPlayer.AvailablePieces.Count > 0)
+                b_GameStateManager.SwitchPlayerTurn();
 
             //display player turn message
-            b_GameManager.ChangeState(GameStateType.Placing);
+            b_GameStateManager.ChangeState(GameStateType.Placing);
         }
         else
         {
             //switch player
-            b_GameManager.SwitchPlayerTurn();
+            b_GameStateManager.SwitchPlayerTurn();
 
             //change game state to moving
-            b_GameManager.ChangeState(GameStateType.Moving);
+            b_GameStateManager.ChangeState(GameStateType.Moving);
         }
     }
 }
