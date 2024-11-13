@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class GameBoardManager : MonoBehaviour
@@ -11,7 +10,6 @@ public class GameBoardManager : MonoBehaviour
 
     [Header("Prefabs")]
     [SerializeField] private BoardNode _nodePrefab;
-    [SerializeField] private GameObject _ringPrefab;
     [SerializeField] private BoardLine _linePrefab;
 
     [Header("Internal Components")]
@@ -103,9 +101,15 @@ public class GameBoardManager : MonoBehaviour
         _nodes.Clear();
         _boardNodes.Clear();
 
+        if (_gameData.EnableMiddlePosition)
+        {
+            AddNode(0, 0, 0, transform);
+        }
+
         for (int ringIndex = 1; ringIndex <= _gameData.RingsAmount; ringIndex++)
         {
-            var ring = Instantiate(_ringPrefab, transform);
+            GameObject ring = new();
+            ring.transform.parent = transform;
             ring.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             ring.name = $"Ring_{ringIndex}";
 
@@ -117,22 +121,7 @@ public class GameBoardManager : MonoBehaviour
                     if (i == 0 && j == 0)
                         continue;
 
-                    Vector2Int boardCoordinate = new(i * ringIndex, j * ringIndex);
-                    Vector3 worldPosition = ring.transform.position + new Vector3(boardCoordinate.x * _gameData.PositionOffset, boardCoordinate.y * _gameData.PositionOffset, 0);
-                    List<Vector2Int> connectionDirections = GetNodeConnectionDirections(boardCoordinate, ringIndex);
-
-                    BoardNode boardNode = Instantiate(_nodePrefab, ring.transform);
-                    boardNode.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
-                    boardNode.gameObject.name = $"Node_{boardCoordinate.x}_{boardCoordinate.y}";
-
-                    Node node = new(boardCoordinate, boardNode, ringIndex, connectionDirections);
-                    boardNode.SetupBoardNode(node);
-
-                    _nodes.Add(boardCoordinate, node);
-                    _boardNodes.Add(boardNode);
-
-                    //testing
-                    //boardNode.GetComponent<SpriteRenderer>().color = ringIndex == 1 ? Color.red : (ringIndex == 2 ? Color.green : Color.blue);
+                    AddNode(i, j, ringIndex, ring.transform);
                 }
             }
         }
@@ -144,9 +133,10 @@ public class GameBoardManager : MonoBehaviour
     {
         _lines.Clear();
 
-        var lineHolder = Instantiate(_ringPrefab, transform);
+        GameObject lineHolder = new();
+        lineHolder.transform.parent = transform;
         lineHolder.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        lineHolder.gameObject.name = "LineHolder";
+        lineHolder.name = "LineHolder";
 
         List<HashSet<BoardNode>> allConnections = new();
 
@@ -184,6 +174,23 @@ public class GameBoardManager : MonoBehaviour
         }
     }
 
+    private void AddNode(int xCoord, int yCoord, int ringIndex, Transform parent)
+    {
+        Vector2Int boardCoordinate = new(xCoord * ringIndex, yCoord * ringIndex);
+        Vector3 worldPosition = parent.position + new Vector3(boardCoordinate.x * _gameData.PositionOffset, boardCoordinate.y * _gameData.PositionOffset, 0);
+        List<Vector2Int> connectionDirections = GetNodeConnectionDirections(boardCoordinate, ringIndex);
+
+        BoardNode boardNode = Instantiate(_nodePrefab, parent);
+        boardNode.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+        boardNode.gameObject.name = $"Node_{boardCoordinate.x}_{boardCoordinate.y}";
+
+        Node node = new(boardCoordinate, boardNode, ringIndex, connectionDirections);
+        boardNode.SetupBoardNode(node);
+
+        _nodes.Add(boardCoordinate, node);
+        _boardNodes.Add(boardNode);
+    }
+
     private List<Vector2Int> GetNodeConnectionDirections(Vector2Int coordinate, int ringIndex)
     {
         List<Vector2Int> results = new();
@@ -194,7 +201,18 @@ public class GameBoardManager : MonoBehaviour
         //center of the board node
         if (coordinate.Equals(Vector2Int.zero))
         {
+            results.Add(Vector2Int.up);
+            results.Add(Vector2Int.down);
+            results.Add(Vector2Int.left);
+            results.Add(Vector2Int.right);
 
+            if (_gameData.EnableDiagonalLines)
+            {
+                results.Add(Vector2Int.up + Vector2Int.left);
+                results.Add(Vector2Int.up + Vector2Int.right);
+                results.Add(Vector2Int.down + Vector2Int.left);
+                results.Add(Vector2Int.down + Vector2Int.right);
+            }
         }
 
         //middle of the line node
@@ -248,7 +266,7 @@ public class GameBoardManager : MonoBehaviour
                     results.Add(new(deltaX, deltaY));
 
                 //for lower rings
-                else if (minRingIndex < ringIndex)
+                if (minRingIndex < ringIndex)
                     results.Add(new(-deltaX, -deltaY));
             }
         }
