@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <PlayerName>k__BackingField: Player_2
   <PieceColor>k__BackingField: {r: 0.19428623, g: 0.34973332, b: 0.6981132, a: 1}
-  <PiecesInitialAmount>k__BackingField: 3
+  <MovementEffectSpeed>k__BackingField: 40

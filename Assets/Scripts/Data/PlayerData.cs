@@ -7,11 +7,13 @@ public class PlayerData : ScriptableObject
 {
     [field: SerializeField] public string PlayerName { get; private set; }
     [field: SerializeField] public Color PieceColor { get; private set; }
+    [field: SerializeField] public float MovementEffectSpeed { get; private set; }
 
     public Queue<PlayerPiece> AvailablePieces { get; private set; } = new();
     public List<PlayerPiece> PlacedPieces { get; private set; } = new();
     public List<PlayerPiece> DestroyedPieces { get; private set; } = new();
     public List<HashSet<Node>> Mills { get; private set; } = new();
+    public Vector2 StashWorldPosition { get; private set; }
 
     public void InitPlayer(int initialPiecesAmount)
     {
@@ -22,6 +24,11 @@ public class PlayerData : ScriptableObject
 
         for (int i = 0; i < initialPiecesAmount; i++)
             AvailablePieces.Enqueue(new PlayerPiece(this));
+    }
+
+    public void WriteStashWroldPosition(Vector2 stashWorldPosition)
+    {
+        StashWorldPosition = stashWorldPosition;
     }
 
     public void RemovePieceFromBoard(PlayerPiece piece, Node node, bool isDestroyed = false)
