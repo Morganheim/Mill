@@ -34,14 +34,14 @@ public class GameEventEmitter : MonoBehaviour
         }
     }
 
-    public void Emit(string name, GameEventMessage message = null)
+    public void Emit(string name)
     {
         for (int i = 0; i < _emitterResponses.Count; i++)
         {
             if (_emitterResponses[i].ResponseName != name)
                 continue;
 
-            _emitterResponses[i].Emit(this, message);
+            _emitterResponses[i].Emit(this, null);
         }
     }
 }
