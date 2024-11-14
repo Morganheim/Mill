@@ -14,20 +14,32 @@ public class GameManager : MonoBehaviour
         _emitter.Emit("OnGameLoaded");
     }
 
-    public async void OnGameRestartRequested()
+    public void OnGameRestartRequested()
     {
-        await SceneManager.UnloadSceneAsync("GameScene");
+        OnGameUnloadRequested();
 
         OnGameStartRequested();
     }
 
-    public void OnMainMenuRequested()
+    public async void OnGameUnloadRequested()
     {
-        SceneManager.UnloadSceneAsync("GameScene");
+        await SceneManager.UnloadSceneAsync("GameScene");
+
+        _emitter.Emit("OnGameUnloaded");
     }
 
     public void OnQuitGameRequested()
     {
         Application.Quit();
+    }
+
+    public void OnPauseRequested()
+    {
+        _emitter.Emit("OnGamePause");
+    }
+
+    public void OnUnpauseRequested()
+    {
+        _emitter.Emit("OnGameUnpause");
     }
 }

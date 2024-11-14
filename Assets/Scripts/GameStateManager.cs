@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class GameStateManager : MonoBehaviour
 {
-    /**************************************** INSPECTOR VARIABLES ****************************************/
     [Header("Data")]
     [SerializeField] private GameData _gameData;
     [SerializeField] private PlayerData _player1;
@@ -13,11 +12,9 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private GameBoardManager _boardManager;
     [SerializeField] private GameEventEmitter _emitter;
 
-    /**************************************** PRIVATE VARIABLES ****************************************/
     private Dictionary<GameStateType, BaseGameState> _gameStates = new();
     private BaseGameState _currentState;
 
-    /**************************************** PROPERTIES ****************************************/
     public PlayerData CurrentPlayer { get; private set; }
     public PlayerData OpponentPlayer { get => CurrentPlayer == _player1 ? _player2 : _player1; }
     public PlayerData WinnerPlayer { get; private set; }
@@ -25,13 +22,6 @@ public class GameStateManager : MonoBehaviour
     public PlayerPiece SelectedPiece { get; set; }
     public Node HoveredNode { get; private set; }
 
-    /**************************************** UNITY CALLBACKS ****************************************/
-    private void OnEnable()
-    {
-        GameInit();
-    }
-
-    /**************************************** EVENT CALLBACKS ****************************************/
     public void OnNodeClicked(GameEventMessage gameEventMessage)
     {
         NodeMessage nodeMessage = (NodeMessage)gameEventMessage;
@@ -73,17 +63,11 @@ public class GameStateManager : MonoBehaviour
         _currentState.OnStateEnter();
     }
 
-    public void OnGameResetRequested()
+    public void OnGameLoaded()
     {
-
+        GameInit();
     }
 
-    public void OnMainMenuRequested()
-    {
-
-    }
-
-    /**************************************** PUBLIC METHODS ****************************************/
     public void ChangeState(GameStateType stateType)
     {
         GameStateType previousStateType = _currentState.StateType;
@@ -92,7 +76,7 @@ public class GameStateManager : MonoBehaviour
         _currentState = _gameStates[stateType];
         _currentState.OnStateEnter();
 
-        _emitter.Emit(new GameStateMessage("OnGameStateChange", previousStateType, stateType, CurrentPlayer));
+        _emitter.Emit(new GameStateMessage("OnGameStateChange", previousStateType, stateType, CurrentPlayer, OpponentPlayer));
     }
 
     public void SwitchPlayerTurn()
@@ -168,7 +152,6 @@ public class GameStateManager : MonoBehaviour
         return false;
     }
 
-    /**************************************** PRIVATE METHODS ****************************************/
     private void GameInit()
     {
         _player1.InitPlayer(_gameData.PiecesInitialAmount);
@@ -190,7 +173,8 @@ public class GameStateManager : MonoBehaviour
 
         _currentState = _gameStates[GameStateType.Placing];
         _currentState.OnStateEnter();
-        _emitter.Emit(new GameStateMessage("OnGameStateChange", GameStateType.None, _currentState.StateType, CurrentPlayer));
+
+        _emitter.Emit(new GameStateMessage("OnGameStateChange", GameStateType.None, _currentState.StateType, CurrentPlayer, OpponentPlayer));
     }
 
     private bool IsLoseCondition()

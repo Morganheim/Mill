@@ -19,11 +19,9 @@ public class GameBoardManager : MonoBehaviour
     private readonly List<BoardNode> _boardNodes = new();
     private readonly List<BoardLine> _lines = new();
 
-    private void OnEnable()
+    public void OnGameLoaded()
     {
-        SetupBoard();
-
-        _emitter.Emit("OnGameBoardSetupComplete");
+        GameBoardInit();
     }
 
     public Node GetNode(Vector2Int boardCoordinate)
@@ -96,6 +94,14 @@ public class GameBoardManager : MonoBehaviour
         return uniqueMillsList;
     }
 
+    private void GameBoardInit()
+    {
+        SetupBoard();
+        DrawBoardLines();
+
+        _emitter.Emit("OnGameBoardSetupComplete");
+    }
+
     private void SetupBoard()
     {
         _nodes.Clear();
@@ -125,8 +131,6 @@ public class GameBoardManager : MonoBehaviour
                 }
             }
         }
-
-        DrawBoardLines();
     }
 
     private void DrawBoardLines()

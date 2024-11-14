@@ -23,7 +23,7 @@ public class InputEventController : MonoBehaviour
 
         _isPaused = !_isPaused;
 
-        _emitter.Emit(!_isPaused ? "OnPauseRequested" : "OnUnpauseRequested");
+        _emitter.Emit(_isPaused ? "OnPauseRequested" : "OnUnpauseRequested");
     }
 
     public void OnDeselectPieceInputReceived(InputAction.CallbackContext context)
@@ -37,5 +37,10 @@ public class InputEventController : MonoBehaviour
     public void OnGameComplete()
     {
         _isGameOver = true;
+    }
+
+    public void OnGamePauseToggle(bool isPaused)
+    {
+        _isPaused = isPaused;
     }
 }

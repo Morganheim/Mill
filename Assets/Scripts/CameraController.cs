@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     [Header("Internal Components")]
     [SerializeField] private Camera _camera;
 
-    private void OnEnable()
+    public void OnGameLoaded()
     {
         _camera.orthographicSize = Mathf.RoundToInt(_gameData.RingsAmount * (10 / 3));
     }
