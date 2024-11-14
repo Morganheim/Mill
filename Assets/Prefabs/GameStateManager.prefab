@@ -1,0 +1,340 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8406726507204511416
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2494984388978325158}
+  - component: {fileID: 1166602448236028614}
+  - component: {fileID: 3805479745541160979}
+  - component: {fileID: 332525139469724701}
+  - component: {fileID: 739295400658744380}
+  - component: {fileID: 1352722423388588449}
+  - component: {fileID: 1989864664629597637}
+  m_Layer: 0
+  m_Name: GameStateManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2494984388978325158
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8406726507204511416}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1166602448236028614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8406726507204511416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac1f6ed5ef54e84f92442b0132c06cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameData: {fileID: 11400000, guid: 4f4ef02235a69eb4ca952255b826333e, type: 2}
+  _player1: {fileID: 11400000, guid: 9135e7b43c68e214fbeeaf927cb119c0, type: 2}
+  _player2: {fileID: 11400000, guid: e20078d3455adbf418d4666d8e72ec7b, type: 2}
+  _boardManager: {fileID: 3805479745541160979}
+  _emitter: {fileID: 739295400658744380}
+--- !u!114 &3805479745541160979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8406726507204511416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d038c9fbf72b98458aa78e9a49b4608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameData: {fileID: 11400000, guid: 4f4ef02235a69eb4ca952255b826333e, type: 2}
+  _nodePrefab: {fileID: 66466028916309652, guid: ee07b09764d9c1246a0171d34fc1cb80, type: 3}
+  _linePrefab: {fileID: 3903216988262199708, guid: 1946a32d36ff01a4085b857597ff0b1d, type: 3}
+  _emitter: {fileID: 739295400658744380}
+--- !u!114 &332525139469724701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8406726507204511416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e149325ef5de2b54dbdfdcf0a29a3b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _emitter: {fileID: 739295400658744380}
+--- !u!114 &739295400658744380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8406726507204511416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5acc26751586a754582fe3920e9dc2ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _emitterResponses:
+  - <ResponseName>k__BackingField: OnGameSetupComplete
+    _scriptableEvents:
+    - {fileID: 11400000, guid: eda5fecba791f044b9b3c920a4817934, type: 2}
+  - <ResponseName>k__BackingField: OnGameBoardSetupComplete
+    _scriptableEvents:
+    - {fileID: 11400000, guid: 5323e59cdaabab14bbcd684eb4b48b23, type: 2}
+  - <ResponseName>k__BackingField: OnGameStateChange
+    _scriptableEvents:
+    - {fileID: 11400000, guid: fce53f46dcfd94248bb3de9c5bd8b77d, type: 2}
+  - <ResponseName>k__BackingField: OnGameComplete
+    _scriptableEvents:
+    - {fileID: 11400000, guid: d285df2c7c8f5fc4091376b629f476bc, type: 2}
+  - <ResponseName>k__BackingField: OnDisplayNotificationRequested
+    _scriptableEvents:
+    - {fileID: 11400000, guid: ff612983d76eb434f9ac55954873dfd4, type: 2}
+  - <ResponseName>k__BackingField: OnTempNotificationRequested
+    _scriptableEvents:
+    - {fileID: 11400000, guid: 2f812bb5c77686146908116a73934c0a, type: 2}
+  - <ResponseName>k__BackingField: OnPauseRequested
+    _scriptableEvents:
+    - {fileID: 11400000, guid: 836d13918a36b4d468ddd05770b9368c, type: 2}
+  - <ResponseName>k__BackingField: OnUnpauseRequested
+    _scriptableEvents:
+    - {fileID: 11400000, guid: 23c878fffe539a544b3aacca30b4cd30, type: 2}
+  - <ResponseName>k__BackingField: OnDeselectPiece
+    _scriptableEvents:
+    - {fileID: 11400000, guid: b911d662f187d7240808fac43de0cbf3, type: 2}
+--- !u!114 &1352722423388588449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8406726507204511416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f63085c08b5a7a040b173de5833b78bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eventResponses:
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: d8709d0127c67ec4f944ef1a7f58f557, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1166602448236028614}
+          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+          m_MethodName: OnNodeClicked
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: ea557c7e5acce4a48ab96c4c47823f37, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1166602448236028614}
+          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+          m_MethodName: OnNodeHoverEnter
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: 276f53069d5fa2c40ac779c4b459d717, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1166602448236028614}
+          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+          m_MethodName: OnNodeHoverExit
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: b911d662f187d7240808fac43de0cbf3, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1166602448236028614}
+          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+          m_MethodName: OnDeselectPiece
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: d285df2c7c8f5fc4091376b629f476bc, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 332525139469724701}
+          m_TargetAssemblyTypeName: InputEventController, Assembly-CSharp
+          m_MethodName: OnGameComplete
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: c782bbadb3bea9243bc65ad1895d3419, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 332525139469724701}
+          m_TargetAssemblyTypeName: InputEventController, Assembly-CSharp
+          m_MethodName: OnGamePauseToggle
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: c97e3300807d1584fae05b5f04681731, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 332525139469724701}
+          m_TargetAssemblyTypeName: InputEventController, Assembly-CSharp
+          m_MethodName: OnGamePauseToggle
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: 38e4970f0241af54bbc8effafedc4d5c, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1166602448236028614}
+          m_TargetAssemblyTypeName: GameStateManager, Assembly-CSharp
+          m_MethodName: OnGameLoaded
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 3805479745541160979}
+          m_TargetAssemblyTypeName: GameBoardManager, Assembly-CSharp
+          m_MethodName: OnGameLoaded
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &1989864664629597637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8406726507204511416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: d71df23135ff9754abfc63c752bd8e3f, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 332525139469724701}
+        m_TargetAssemblyTypeName: InputEventController, Assembly-CSharp
+        m_MethodName: OnPauseInputReceived
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6d271f92-b30c-4457-8179-72ffbe7b8af7
+    m_ActionName: 'GameMap/PauseAction[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 332525139469724701}
+        m_TargetAssemblyTypeName: InputEventController, Assembly-CSharp
+        m_MethodName: OnDeselectPieceInputReceived
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e0429838-1ae9-4b75-ac88-69607df3d063
+    m_ActionName: 'GameMap/UnselectPieceAction[/Mouse/rightButton]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: GameMap
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}

@@ -63,6 +63,15 @@ MonoBehaviour:
   - <ResponseName>k__BackingField: OnGameLoaded
     _scriptableEvents:
     - {fileID: 11400000, guid: 38e4970f0241af54bbc8effafedc4d5c, type: 2}
+  - <ResponseName>k__BackingField: OnGamePause
+    _scriptableEvents:
+    - {fileID: 11400000, guid: c782bbadb3bea9243bc65ad1895d3419, type: 2}
+  - <ResponseName>k__BackingField: OnGameUnpause
+    _scriptableEvents:
+    - {fileID: 11400000, guid: c97e3300807d1584fae05b5f04681731, type: 2}
+  - <ResponseName>k__BackingField: OnGameUnloaded
+    _scriptableEvents:
+    - {fileID: 11400000, guid: 576fa08e7dad1b44c820e17a126dd057, type: 2}
 --- !u!114 &2454183795545908016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +123,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1579882194887154203}
           m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-          m_MethodName: OnMainMenuRequested
+          m_MethodName: OnGameUnloadRequested
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -131,6 +140,38 @@ MonoBehaviour:
         - m_Target: {fileID: 1579882194887154203}
           m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
           m_MethodName: OnQuitGameRequested
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: 836d13918a36b4d468ddd05770b9368c, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1579882194887154203}
+          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+          m_MethodName: OnPauseRequested
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: 23c878fffe539a544b3aacca30b4cd30, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1579882194887154203}
+          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+          m_MethodName: OnUnpauseRequested
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
