@@ -6,6 +6,7 @@ public class BoardNode : MonoBehaviour
 {
     [SerializeField] private GameEventEmitter _emitter;
     [SerializeField] private SpriteRenderer _highlight;
+    [SerializeField] private PieceMovementEffect _movementEffect;
     [field: SerializeField] public SpriteRenderer SpriteRenderer { get; private set; }
 
     private Node _node;
@@ -24,6 +25,14 @@ public class BoardNode : MonoBehaviour
         _emitter.Emit(new NodeMessage("OnNodeClicked", _node));
     }
 
+    public void MovePieceToNode(PlayerPiece piece, Node originNode = null)
+    {
+        _movementEffect.OnMoveComplete += UpdateColor;
+        Vector2 startPosition = originNode == null ? piece.Owner.StashWorldPosition : originNode.BoardNode.transform.position;
+
+        _movementEffect.ExecuteMove(piece.Owner, startPosition, transform.position);
+    }
+
     public void OnHoverEnter()
     {
         _emitter.Emit(new NodeMessage("OnNodeHoverEnter", _node));
@@ -40,6 +49,12 @@ public class BoardNode : MonoBehaviour
         _highlight.color = color;
         foreach (var boardLine in _boardLines)
             boardLine.UpdateLineColor();
+    }
+
+    public void UpdateColor()
+    {
+        _movementEffect.OnMoveComplete -= UpdateColor;
+        UpdateColor(_node.Piece.Owner.PieceColor);
     }
 
     public void ToggleHighlight(bool isEnabled, Color color = default)
@@ -68,12 +83,12 @@ public class Node
         ConnectionDirections = connectionDirections;
     }
 
-    public void PlacePiece(PlayerPiece piece)
+    public void PlacePiece(PlayerPiece piece, Node originNode = null)
     {
         Piece = piece;
         piece.PlacePiece(this);
 
-        BoardNode.UpdateColor(piece.Owner.PieceColor);
+        BoardNode.MovePieceToNode(piece, originNode);
     }
 
     public void RemovePiece(bool isDestroyed = false)

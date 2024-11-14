@@ -6,9 +6,9 @@ public class BoardLine : MonoBehaviour
 {
     [SerializeField] private LineRenderer _lineRenderer;
 
-    [SerializeField]private BoardNode[] _boardNodes = new BoardNode[2];
+    private readonly BoardNode[] _boardNodes = new BoardNode[2];
 
-    public BoardNode[] BoardNodes=> _boardNodes;
+    public BoardNode[] BoardNodes => _boardNodes;
 
     public void SetupBoardLine(BoardNode firstNode, BoardNode secondNode)
     {

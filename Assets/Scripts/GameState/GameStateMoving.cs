@@ -89,8 +89,11 @@ public class GameStateMoving : BaseGameState
 
             //move selected piece to selected node
             b_GameStateManager.SelectedPiece.Node.BoardNode.ToggleHighlight(false);
+
+            Node originNode = b_GameStateManager.SelectedPiece.Node;
             b_GameStateManager.SelectedPiece.Node.RemovePiece();
-            node.PlacePiece(b_GameStateManager.SelectedPiece);
+            node.PlacePiece(b_GameStateManager.SelectedPiece, originNode);
+
             node.BoardNode.ToggleHighlight(false);
 
             //check for mills
