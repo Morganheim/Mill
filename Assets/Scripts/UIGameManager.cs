@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIGameManager : MonoBehaviour
 {
     [Header("Data")]
     [SerializeField] private PlayerData _player1Data;
@@ -12,18 +13,28 @@ public class UIManager : MonoBehaviour
 
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI _notificationDisplayText;
-    [SerializeField] private TextMeshProUGUI _playerTurnDisplayText;
-    [SerializeField] private TextMeshProUGUI _playerPiecesDisplayText;
+    [SerializeField] private TextMeshProUGUI _player1TurnDisplayText;
+    [SerializeField] private TextMeshProUGUI _player1PiecesDisplayText;
+    [SerializeField] private TextMeshProUGUI _player1PiecesValueDisplayText;
+    [SerializeField] private TextMeshProUGUI _player2TurnDisplayText;
+    [SerializeField] private TextMeshProUGUI _player2PiecesDisplayText;
+    [SerializeField] private TextMeshProUGUI _player2PiecesValueDisplayText;
     [SerializeField] private TextMeshProUGUI _millDisplayText;
     [SerializeField] private TextMeshProUGUI _gameStateDisplayText;
 
-    [Header("Pause Panel References")]
+    [Header("Animator References")]
+    [SerializeField] private Animator _pausePanelAnimator;
+    [SerializeField] private Animator _gameOverPanelAnimator;
 
+    [Header("Panel References")]
+    [SerializeField] private Image _audioPanel;
+    [SerializeField] private Image _interactionBlocker;
 
     [Header("Game Complete Panel References")]
     [SerializeField] private TextMeshProUGUI _gameOverNotificationText;
 
-    private const string TURN_PREFIX = "Playing: ";
+    private const string ON_TURN_SUFIX = "Playing";
+    private const string OFF_TURN_SUFIX = "Waiting";
     private const string STATE_PREFIX = "Phase: ";
     private const string PIECES_PREFIX = "Pieces left: ";
     private const string MILL_TEXT = "MILL!!";
@@ -63,13 +74,19 @@ public class UIManager : MonoBehaviour
         if (stateMessage == null)
             return;
 
-        _playerTurnDisplayText.text = TURN_PREFIX + stateMessage.CurrentPlayer.ToString();
         _gameStateDisplayText.text = STATE_PREFIX + stateMessage.CurrentStateType.ToString();
 
-        if (stateMessage.CurrentPlayer.AvailablePieces.Count > 0)
-            _playerPiecesDisplayText.text = $"{PIECES_PREFIX}<color=#{ColorUtility.ToHtmlStringRGB(stateMessage.CurrentPlayer.PieceColor)}>{stateMessage.CurrentPlayer.AvailablePieces.Count}</color>";
-        else
-            _playerPiecesDisplayText.text = "";
+        string player1Action = stateMessage.CurrentPlayer == _player1Data ? ON_TURN_SUFIX : OFF_TURN_SUFIX;
+        string player2Action = stateMessage.CurrentPlayer == _player2Data ? ON_TURN_SUFIX : OFF_TURN_SUFIX;
+
+        _player1TurnDisplayText.text = $"{_player1Data}: {player1Action}";
+        _player2TurnDisplayText.text = $"{_player2Data}: {player2Action}";
+
+        _player1PiecesDisplayText.text = $"{PIECES_PREFIX}";
+        _player2PiecesDisplayText.text = $"{PIECES_PREFIX}";
+
+        _player1PiecesValueDisplayText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(_player1Data.PieceColor)}>{_player1Data.AvailablePieces.Count}</color>";
+        _player2PiecesValueDisplayText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(_player2Data.PieceColor)}>{_player2Data.AvailablePieces.Count}</color>";
 
         if (stateMessage.CurrentStateType.Equals(GameStateType.Removing))
         {
@@ -102,6 +119,39 @@ public class UIManager : MonoBehaviour
         {
             _gameOverNotificationText.text = $"Draw! An even game indeed!\nHow about a rematch?";
         }
+
+        _pausePanelAnimator.gameObject.SetActive(false);
+        _gameOverPanelAnimator.Play("GameOverPanelOn");
+
+        if (_typingCoroutine != null)
+            StopCoroutine(_typingCoroutine);
+
+        _typingCoroutine = StartCoroutine(TypeMessage(_notificationDisplayText, "Game Over"));
+    }
+
+    public void OnGameLoaded()
+    {
+        var pos1 = Camera.main.ScreenToWorldPoint(_player1PiecesValueDisplayText.rectTransform.position);
+        var pos2 = Camera.main.ScreenToWorldPoint(_player2PiecesValueDisplayText.rectTransform.position);
+
+        pos1.z = 0;
+        pos2.z = 0;
+
+        _player1Data.WriteStashWroldPosition(pos1);
+        _player2Data.WriteStashWroldPosition(pos2);
+    }
+
+    public void OnTogglePause(bool isPaused)
+    {
+        if (isPaused)
+            _interactionBlocker.raycastTarget = isPaused;
+
+        _pausePanelAnimator.Play(isPaused ? "PausePanelAnimOn" : "PausePanelAnimOff");
+    }
+
+    public void PauseOffAnimationComplete()
+    {
+        _interactionBlocker.raycastTarget = false;
     }
 
     private IEnumerator TypeMessage(TextMeshProUGUI textUI, string message, float notificationLifetime = 0f)
