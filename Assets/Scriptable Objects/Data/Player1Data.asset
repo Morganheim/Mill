@@ -15,4 +15,4 @@ MonoBehaviour:
   <PlayerName>k__BackingField: Player One
   <PieceColor>k__BackingField: {r: 0.75, g: 0, b: 0, a: 1}
   <PieceColorIndex>k__BackingField: 0
-  <MovementEffectSpeed>k__BackingField: 40
+  <MovementEffectSpeed>k__BackingField: 60
