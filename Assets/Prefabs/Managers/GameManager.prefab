@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9063923669880044303}
   - component: {fileID: 1579882194887154203}
+  - component: {fileID: 3134185744858625828}
   - component: {fileID: 7240270622727809094}
   - component: {fileID: 2454183795545908016}
   m_Layer: 0
@@ -47,6 +48,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _emitter: {fileID: 7240270622727809094}
+--- !u!114 &3134185744858625828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8808817127365209094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d681c32ecd201249a72a564feb01a11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameData: {fileID: 11400000, guid: 4f4ef02235a69eb4ca952255b826333e, type: 2}
+  _audioData: {fileID: 11400000, guid: 4a0104917c2d5cc418ab098e568b8920, type: 2}
+  _sfxPlayerPrefab: {fileID: 8033782580260289528, guid: 8e60d89a82529464fba56fc4c7d5297b, type: 3}
+  _mixer: {fileID: 24100000, guid: 647ce089cb0117e47ab585d042c50c93, type: 2}
+  _mixerMusicGroup: {fileID: 7259955525156907976, guid: 647ce089cb0117e47ab585d042c50c93, type: 2}
+  _mixerSFXGroup: {fileID: 2647121272523204481, guid: 647ce089cb0117e47ab585d042c50c93, type: 2}
 --- !u!114 &7240270622727809094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +152,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 3134185744858625828}
+          m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+          m_MethodName: OnMainMenuRequested
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: 8f798181a5eaa1e4f955a962c3c40fb5, type: 2}
     _responseEvnet:
       m_PersistentCalls:
@@ -173,6 +204,70 @@ MonoBehaviour:
           m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
           m_MethodName: OnUnpauseRequested
           m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: 38e4970f0241af54bbc8effafedc4d5c, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3134185744858625828}
+          m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+          m_MethodName: OnGameLoaded
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: d285df2c7c8f5fc4091376b629f476bc, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3134185744858625828}
+          m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+          m_MethodName: OnGameComplete
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: 8bc098bfb985c1b40b15b1d4c1b52cda, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3134185744858625828}
+          m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+          m_MethodName: OnSFXRequested
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - <ScriptableEvent>k__BackingField: {fileID: 11400000, guid: 2fa231f6ea0f3624d97b83b684e7c580, type: 2}
+    _responseEvnet:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3134185744858625828}
+          m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+          m_MethodName: OnVolumeChangeRequested
+          m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
