@@ -59,6 +59,9 @@ public class GameStateManager : MonoBehaviour
         if (SelectedPiece == null)
             return;
 
+        if (HoveredNode != null && !HoveredNode.IsOccupied())
+            HoveredNode.BoardNode.ToggleHighlight(false);
+
         SelectedPiece.Node.BoardNode.ToggleHighlight(false);
         SelectedPiece = null;
         _currentState.OnStateEnter();
