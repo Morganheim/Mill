@@ -17,12 +17,17 @@ public class AudioPlayer : MonoBehaviour
         AudioSource.clip = _audioInfo.Clip;
         AudioSource.loop = _audioInfo.IsLooping;
 
-        _audioInfo.OnStopEvent.AddListener(OnStopEvent);
+        _audioInfo.OnStopEvent?.AddListener(OnStopEvent);
 
         AudioSource.Play();
 
         if (!_audioInfo.IsLooping)
             StartCoroutine(CheckAudioFinishedPlaying());
+    }
+
+    public void ForceStop()
+    {
+        StopPlaying();
     }
 
     private void StopPlaying()

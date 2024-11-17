@@ -12,11 +12,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioMixerGroup _mixerMusicGroup;
     [SerializeField] private AudioMixerGroup _mixerSFXGroup;
 
-    private HashSet<AudioPlayer> _availableAudioPlayerPool = new();
-    private HashSet<AudioPlayer> _activeAudioPlayerPool = new();
+    private List<AudioPlayer> _availableAudioPlayerPool = new();
+    private List<AudioPlayer> _activeAudioPlayerPool = new();
 
     private UnityEvent _onGameLoad = new();
-    private UnityEvent _onGameUnload = new();
     private UnityEvent _onGameComplete = new();
 
     private void OnEnable()
@@ -28,8 +27,9 @@ public class AudioManager : MonoBehaviour
 
     public void OnGameLoaded()
     {
-        //stop main menu music
-        _onGameLoad?.Invoke();
+        //stop main menu music (or win/draw music)
+        for (int i = _activeAudioPlayerPool.Count - 1; i >= 0; i--)
+            _activeAudioPlayerPool[i].ForceStop();
 
         //play game music
         PlayClip(_audioData.GameMusic, _mixerMusicGroup, true, _onGameComplete);
@@ -38,18 +38,11 @@ public class AudioManager : MonoBehaviour
     public void OnMainMenuRequested()
     {
         //stop game music
-        _onGameComplete?.Invoke();
+        for (int i = _activeAudioPlayerPool.Count - 1; i >= 0; i--)
+            _activeAudioPlayerPool[i].ForceStop();
 
         //play main menu music
         PlayClip(_audioData.MainMenuMusic, _mixerMusicGroup, true, _onGameLoad);
-    }
-
-    public void OnGameUnload()
-    {
-        //stop game music
-        _onGameComplete?.Invoke();
-
-        _onGameUnload?.Invoke();
     }
 
     public void OnGameComplete(GameEventMessage gameEventMessage)
@@ -94,7 +87,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void PlayClip(AudioClip clip, AudioMixerGroup mixerGroup, bool isLooping = false, UnityEvent onStopEvent = null)
+    private void PlayClip(AudioClip clip, AudioMixerGroup mixerGroup, bool isLooping, UnityEvent onStopEvent)
     {
         if (_availableAudioPlayerPool.Count < 1)
         {
@@ -108,8 +101,6 @@ public class AudioManager : MonoBehaviour
             Debug.LogError($"Could not find an audio player!");
             return;
         }
-
-        onStopEvent ??= _onGameUnload;
 
         AudioInfo info = new(clip, mixerGroup, isLooping, onStopEvent, ReturnToPool);
         audioPlayer.Play(info);
