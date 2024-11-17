@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -10,7 +8,7 @@ public class CameraController : MonoBehaviour
     [Header("Internal Components")]
     [SerializeField] private Camera _camera;
 
-    public void OnGameLoaded()
+    public void OnGameStartRequested()
     {
         _camera.orthographicSize = Mathf.RoundToInt(_gameData.RingsAmount * (10 / 3));
     }

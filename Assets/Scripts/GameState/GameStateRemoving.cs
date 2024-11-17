@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameStateRemoving : BaseGameState
@@ -43,6 +41,8 @@ public class GameStateRemoving : BaseGameState
                     //destroy piece
                     node.RemovePiece(true);
 
+                    b_GameStateManager.RequestSFX(b_GameStateManager.AudioData.PieceRemoveSFX, false, null);
+
                     foreach (var piece in b_GameStateManager.OpponentPlayer.PlacedPieces)
                         if (!b_GameStateManager.OpponentPlayer.IsNodePartOfAnActiveMill(piece.Node))
                             piece.Node.BoardNode.ToggleHighlight(false);
@@ -81,7 +81,7 @@ public class GameStateRemoving : BaseGameState
             toggle = false;
             color = new(node.BoardNode.SpriteRenderer.color.r, node.BoardNode.SpriteRenderer.color.g, node.BoardNode.SpriteRenderer.color.b);
 
-            if (node.IsOccupied() && node.Piece.Owner == b_GameStateManager.OpponentPlayer)
+            if (node.IsOccupied() && node.Piece.Owner == b_GameStateManager.OpponentPlayer && !b_GameStateManager.OpponentPlayer.IsNodePartOfAnActiveMill(node))
             {
                 toggle = true;
                 color = Color.white;
@@ -97,7 +97,7 @@ public class GameStateRemoving : BaseGameState
             toggle = false;
             color = node.BoardNode.SpriteRenderer.color;
 
-            if (node.IsOccupied() && node.Piece.Owner == b_GameStateManager.OpponentPlayer)
+            if (node.IsOccupied() && node.Piece.Owner == b_GameStateManager.OpponentPlayer && !b_GameStateManager.OpponentPlayer.IsNodePartOfAnActiveMill(node))
             {
                 toggle = true;
                 color = b_GameStateManager.CurrentPlayer.PieceColor;

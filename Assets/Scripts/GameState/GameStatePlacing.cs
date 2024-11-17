@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameStatePlacing : BaseGameState
@@ -30,7 +28,8 @@ public class GameStatePlacing : BaseGameState
 
             node.BoardNode.ToggleHighlight(false);
 
-            //TODO placing piece animation and effects
+            //play sfx
+            b_GameStateManager.RequestSFX(b_GameStateManager.AudioData.PiecePlacementSFX, false, null);
 
             //check for mill
             if (b_GameStateManager.IsMill(node))

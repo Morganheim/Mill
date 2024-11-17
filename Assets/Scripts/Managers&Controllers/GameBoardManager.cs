@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -107,7 +106,7 @@ public class GameBoardManager : MonoBehaviour
         _nodes.Clear();
         _boardNodes.Clear();
 
-        if (_gameData.EnableMiddlePosition)
+        if (_gameData.IsMiddlePositionEnabled)
         {
             AddNode(0, 0, 0, transform);
         }
@@ -210,7 +209,7 @@ public class GameBoardManager : MonoBehaviour
             results.Add(Vector2Int.left);
             results.Add(Vector2Int.right);
 
-            if (_gameData.EnableDiagonalLines)
+            if (_gameData.IsDiagonalBoardLinesEnabled)
             {
                 results.Add(Vector2Int.up + Vector2Int.left);
                 results.Add(Vector2Int.up + Vector2Int.right);
@@ -260,7 +259,7 @@ public class GameBoardManager : MonoBehaviour
             results.Add(new(0, -coordinate.y)); //vertical check: 0, -y (always other y direction (up/down) and middle of the board on x axis)
 
             //TODO add diagonals flag to data
-            if (_gameData.EnableDiagonalLines)
+            if (_gameData.IsDiagonalBoardLinesEnabled)
             {
                 int deltaX = coordinate.x == 0 ? 0 : MathF.Sign(coordinate.x);
                 int deltaY = coordinate.y == 0 ? 0 : MathF.Sign(coordinate.y);

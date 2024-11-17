@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardLine : MonoBehaviour
@@ -7,8 +5,6 @@ public class BoardLine : MonoBehaviour
     [SerializeField] private LineRenderer _lineRenderer;
 
     private readonly BoardNode[] _boardNodes = new BoardNode[2];
-
-    public BoardNode[] BoardNodes => _boardNodes;
 
     public void SetupBoardLine(BoardNode firstNode, BoardNode secondNode)
     {

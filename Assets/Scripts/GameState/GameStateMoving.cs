@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameStateMoving : BaseGameState
@@ -57,6 +55,8 @@ public class GameStateMoving : BaseGameState
                 return;
             }
 
+            b_GameStateManager.RequestSFX(b_GameStateManager.AudioData.PieceSelectSFX, false, null);
+
             b_GameStateManager.SelectPiece(node.Piece);
         }
 
@@ -72,6 +72,7 @@ public class GameStateMoving : BaseGameState
                     b_GameStateManager.SelectedPiece.Node.BoardNode.ToggleHighlight(false);
                     b_GameStateManager.SelectedPiece = node.Piece;
                     b_GameStateManager.SelectedPiece.Node.BoardNode.ToggleHighlight(true, b_GameStateManager.CurrentPlayer.PieceColor);
+                    b_GameStateManager.RequestSFX(b_GameStateManager.AudioData.PieceSelectSFX, false, null);
                     return;
                 }
 
@@ -93,6 +94,8 @@ public class GameStateMoving : BaseGameState
             Node originNode = b_GameStateManager.SelectedPiece.Node;
             b_GameStateManager.SelectedPiece.Node.RemovePiece();
             node.PlacePiece(b_GameStateManager.SelectedPiece, originNode);
+
+            b_GameStateManager.RequestSFX(b_GameStateManager.AudioData.PieceMovementSFX, false, null);
 
             node.BoardNode.ToggleHighlight(false);
 

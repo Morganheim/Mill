@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +6,7 @@ public class PlayerData : ScriptableObject
 {
     [field: SerializeField] public string PlayerName { get; private set; }
     [field: SerializeField] public Color PieceColor { get; private set; }
+    [field: SerializeField] public int PieceColorIndex { get; private set; }
     [field: SerializeField] public float MovementEffectSpeed { get; private set; }
 
     public Queue<PlayerPiece> AvailablePieces { get; private set; } = new();
@@ -26,7 +26,18 @@ public class PlayerData : ScriptableObject
             AvailablePieces.Enqueue(new PlayerPiece(this));
     }
 
-    public void WriteStashWroldPosition(Vector2 stashWorldPosition)
+    public void UpdatePlayerName(string name)
+    {
+        PlayerName = name;
+    }
+
+    public void UpdatePlayerColor(Color color, int index)
+    {
+        PieceColor = color;
+        PieceColorIndex = index;
+    }
+
+    public void WriteStashWorldPosition(Vector2 stashWorldPosition)
     {
         StashWorldPosition = stashWorldPosition;
     }

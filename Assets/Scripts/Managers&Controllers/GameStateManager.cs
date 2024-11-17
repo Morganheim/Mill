@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameStateManager : MonoBehaviour
 {
     [Header("Data")]
     [SerializeField] private GameData _gameData;
+    [SerializeField] private AudioData _audioData;
     [SerializeField] private PlayerData _player1;
     [SerializeField] private PlayerData _player2;
 
@@ -16,11 +18,10 @@ public class GameStateManager : MonoBehaviour
     private BaseGameState _currentState;
 
     public PlayerData CurrentPlayer { get; private set; }
-    public PlayerData OpponentPlayer { get => CurrentPlayer == _player1 ? _player2 : _player1; }
-    public PlayerData WinnerPlayer { get; private set; }
-    public PlayerData LoserPlayer { get; private set; }
-    public PlayerPiece SelectedPiece { get; set; }
+    public PlayerData OpponentPlayer => CurrentPlayer == _player1 ? _player2 : _player1;
     public Node HoveredNode { get; private set; }
+    public PlayerPiece SelectedPiece { get; set; }
+    public AudioData AudioData => _audioData;
 
     public void OnNodeClicked(GameEventMessage gameEventMessage)
     {
@@ -94,6 +95,11 @@ public class GameStateManager : MonoBehaviour
         _emitter.Emit(new NotificationMessage("OnTempNotificationRequested", message, _gameData.NotificationLifetime));
     }
 
+    public void RequestSFX(AudioClip clip, bool isLooping, UnityEvent onStopLoop, AudioType audioType = AudioType.SFX)
+    {
+        _emitter.Emit(new AudioMessage("OnSFXRequested", audioType, clip, isLooping, onStopLoop));
+    }
+
     public void SelectPiece(PlayerPiece piece)
     {
         SelectedPiece = piece;
@@ -106,11 +112,13 @@ public class GameStateManager : MonoBehaviour
         if (IsLoseCondition() || IsDrawCondition())
         {
             //cache winner if there is a winner
-            WinnerPlayer = IsDrawCondition() ? null : CurrentPlayer;
-            LoserPlayer = IsDrawCondition() ? null : OpponentPlayer;
+            PlayerData winner = IsDrawCondition() ? null : CurrentPlayer;
+            PlayerData loser = IsDrawCondition() ? null : OpponentPlayer;
+
+            RequestSFX(winner != null ? _audioData.WinSFX : _audioData.DrawSFX, false, null, AudioType.Music);
 
             //display game over screen
-            _emitter.Emit(new GameCompleteMessage("OnGameComplete", WinnerPlayer, LoserPlayer));
+            _emitter.Emit(new GameCompleteMessage("OnGameComplete", winner, loser));
 
             return true;
         }
@@ -127,12 +135,15 @@ public class GameStateManager : MonoBehaviour
             if (!CurrentPlayer.IsMillDuplicate(mill))
                 flag = true;
 
+        if (flag)
+            RequestSFX(_audioData.MillSFX, false, null);
+
         return flag;
     }
 
     public bool CanMovePieceToNode(PlayerPiece piece, Node node)
     {
-        return !node.IsOccupied() && (node.IsNeighbor(piece.Node) || _gameData.EnablePiecesAlwaysFly);
+        return !node.IsOccupied() && (node.IsNeighbor(piece.Node) || _gameData.IsPiecesFlyEnabled);
     }
 
     public bool IsNodeMovable(Node node)
@@ -140,7 +151,7 @@ public class GameStateManager : MonoBehaviour
         if (!node.IsOccupied())
             return false;
 
-        if (_gameData.EnablePiecesAlwaysFly)
+        if (_gameData.IsPiecesFlyEnabled)
             return true;
 
         HashSet<Node> neighbors = _boardManager.GetNodeNeighbors(node);
@@ -158,7 +169,6 @@ public class GameStateManager : MonoBehaviour
         _player2.InitPlayer(_gameData.PiecesInitialAmount);
 
         CurrentPlayer = _player1;
-        WinnerPlayer = null;
 
         SelectedPiece = null;
 

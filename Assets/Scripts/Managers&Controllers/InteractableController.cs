@@ -4,10 +4,8 @@ using UnityEngine.EventSystems;
 
 public class InteractableController : EventTrigger
 {
-    /**************************************** INSPECTOR VARIABLES ****************************************/
     [SerializeField] private InteractableData _data;
 
-    /**************************************** PRIVATE METHODS ****************************************/
     private void Execute(EventTriggerType id, BaseEventData eventData)
     {
         var triggerCount = triggers.Count;
@@ -28,7 +26,6 @@ public class InteractableController : EventTrigger
         return _data.AllowedMouseKeys.Contains(eventData.button);
     }
 
-    /**************************************** EVENT TRIGGER CALLBACKS ****************************************/
     /// <summary>
     /// Called by the EventSystem when the pointer enters the object associated with this EventTrigger.
     /// </summary>
