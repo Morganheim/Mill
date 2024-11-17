@@ -1,13 +1,13 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1102 &-6526845655517695825
+--- !u!1102 &-7332472588026538447
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PausePanelAnimOff
+  m_Name: PanelPopupAnimOn
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -20,20 +20,20 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 5c1e29b9191c03b479e03944f263d4cd, type: 2}
+  m_Motion: {fileID: 7400000, guid: 101d4c56d08b5f44abe781bfa7942f8f, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &-5417481012491125374
+--- !u!1102 &-5779754839139195573
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PausePanelAnimOn
+  m_Name: PanelPopupAnimOff
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -46,13 +46,13 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 87ed5074d38bb7441b0116cb5bf29a0c, type: 2}
+  m_Motion: {fileID: 7400000, guid: 2090ae02c3baee441b9948c57f6ed3cd, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1107 &-1003274580045970772
+--- !u!1107 &-2792429649808757235
 AnimatorStateMachine:
   serializedVersion: 6
   m_ObjectHideFlags: 1
@@ -62,37 +62,37 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: -5417481012491125374}
-    m_Position: {x: 330, y: 130, z: 0}
+    m_State: {fileID: -5779754839139195573}
+    m_Position: {x: 330, y: 170, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -6526845655517695825}
-    m_Position: {x: 350, y: 180, z: 0}
+    m_State: {fileID: -7332472588026538447}
+    m_Position: {x: 350, y: 220, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 6035749370409593625}
-    m_Position: {x: 310, y: 80, z: 0}
+    m_State: {fileID: 4731932337091029067}
+    m_Position: {x: 310, y: 120, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 80, z: 0}
-  m_ExitPosition: {x: 50, y: -40, z: 0}
+  m_AnyStatePosition: {x: 50, y: 80, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 50, y: 40, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 6035749370409593625}
+  m_DefaultState: {fileID: 4731932337091029067}
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PausePanel
+  m_Name: UIPanelPopupAnimator
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
-    m_StateMachine: {fileID: -1003274580045970772}
+    m_StateMachine: {fileID: -2792429649808757235}
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
@@ -102,14 +102,14 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &6035749370409593625
+--- !u!1102 &4731932337091029067
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Default
+  m_Name: Idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -122,7 +122,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
+  m_Motion: {fileID: 7400000, guid: 92815cf8df031fa4eb79c6010c40d904, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
