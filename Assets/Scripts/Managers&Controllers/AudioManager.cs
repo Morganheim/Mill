@@ -46,6 +46,9 @@ public class AudioManager : MonoBehaviour
 
     public void OnGameUnload()
     {
+        //stop game music
+        _onGameComplete?.Invoke();
+
         _onGameUnload?.Invoke();
     }
 
