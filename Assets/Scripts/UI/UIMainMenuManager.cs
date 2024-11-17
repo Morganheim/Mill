@@ -1,50 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIMainMenuManager : MonoBehaviour
 {
-    [SerializeField] private Animator _backgroundAnimator;
-
-    [SerializeField] private Image _mainMenuPanel;
-    [SerializeField] private Image _settingsPanel;
-    [SerializeField] private Image _interactionBlocker;
-
+    [Header("Data")]
+    [SerializeField] private AudioData _audioData;
+    
+    [Header("Internal Components")]
     [SerializeField] private GameEventEmitter _emitter;
+    [SerializeField] private Animator _backgroundAnimator;
+    [SerializeField] private Animator _settingsPanelAnimator;
+
+    [Header("Panels")]
+    [SerializeField] private Image _mainMenuPanel;
 
     public void OnGameStartButtonClicked()
     {
-        _emitter.Emit("OnGameStartRequested");
-
-        _interactionBlocker.raycastTarget = false;
+        _settingsPanelAnimator.Play("Idle");
 
         _mainMenuPanel.gameObject.SetActive(false);
-        _settingsPanel.gameObject.SetActive(false);
+
+        _emitter.Emit("OnGameStartRequested");
     }
 
     public void OnSettingsPanelOpenRequested()
     {
-
+        _settingsPanelAnimator.Play("PanelSlideAnimOn");
     }
 
     public void OnSettingsPanelCloseRequested()
     {
-
+        _settingsPanelAnimator.Play("PanelSlideAnimOff");
     }
 
     public void OnMainMenuRequested()
     {
-        _interactionBlocker.raycastTarget = false;
-
         _mainMenuPanel.gameObject.SetActive(true);
-        _settingsPanel.gameObject.SetActive(true);
 
         _backgroundAnimator.Play("BackgroundAnim");
+        _settingsPanelAnimator.Play("Idle");
     }
 
     public void OnQuitGameRequested()
     {
         _emitter.Emit("OnQuitGameRequested");
+    }
+
+    public void ButtonClickSFX()
+    {
+        _emitter.Emit(new AudioMessage("OnSFXRequested", AudioType.SFX, _audioData.ButtonClickSFX, false, null));
     }
 }

@@ -1,15 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIGameManager : MonoBehaviour
 {
+    [Header("Internal Components")]
+    [SerializeField] private GameEventEmitter _emitter;
+
     [Header("Data")]
     [SerializeField] private PlayerData _player1Data;
     [SerializeField] private PlayerData _player2Data;
     [SerializeField] private GameData _gameData;
+    [SerializeField] private AudioData _audioData;
+
+    [Header("Panel References")]
+    [SerializeField] private Animator _pausePanelAnimator;
+    [SerializeField] private Animator _gameOverPanelAnimator;
+    [SerializeField] private Animator _audioPanelAnimator;
+    [SerializeField] private AudioSettings _audioPanel;
+    [SerializeField] private CanvasGroup _pausePanel;
+    [SerializeField] private CanvasGroup _gameOverPanel;
 
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI _notificationDisplayText;
@@ -21,17 +32,8 @@ public class UIGameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _player2PiecesValueDisplayText;
     [SerializeField] private TextMeshProUGUI _millDisplayText;
     [SerializeField] private TextMeshProUGUI _gameStateDisplayText;
-
-    [Header("Animator References")]
-    [SerializeField] private Animator _pausePanelAnimator;
-    [SerializeField] private Animator _gameOverPanelAnimator;
-
-    [Header("Panel References")]
-    [SerializeField] private Image _audioPanel;
-    [SerializeField] private Image _interactionBlocker;
-
-    [Header("Game Complete Panel References")]
     [SerializeField] private TextMeshProUGUI _gameOverNotificationText;
+    [SerializeField] private Image _gameBackground;
 
     private const string ON_TURN_SUFIX = "Playing";
     private const string OFF_TURN_SUFIX = "Waiting";
@@ -121,7 +123,7 @@ public class UIGameManager : MonoBehaviour
         }
 
         _pausePanelAnimator.gameObject.SetActive(false);
-        _gameOverPanelAnimator.Play("GameOverPanelOn");
+        _gameOverPanelAnimator.Play("PanelPopupAnimOn");
 
         if (_typingCoroutine != null)
             StopCoroutine(_typingCoroutine);
@@ -137,21 +139,30 @@ public class UIGameManager : MonoBehaviour
         pos1.z = 0;
         pos2.z = 0;
 
-        _player1Data.WriteStashWroldPosition(pos1);
-        _player2Data.WriteStashWroldPosition(pos2);
+        _player1Data.WriteStashWorldPosition(pos1);
+        _player2Data.WriteStashWorldPosition(pos2);
     }
 
     public void OnTogglePause(bool isPaused)
     {
-        if (isPaused)
-            _interactionBlocker.raycastTarget = isPaused;
+        if (!isPaused && _audioPanel.IsEnabled)
+            OnToggleAudioSettingsPanel(false);
 
-        _pausePanelAnimator.Play(isPaused ? "PausePanelAnimOn" : "PausePanelAnimOff");
+        _gameBackground.raycastTarget = isPaused;
+
+        _pausePanelAnimator.Play(isPaused ? "PanelSlideAnimOn" : "PanelSlideAnimOff");
     }
 
-    public void PauseOffAnimationComplete()
+    public void OnToggleAudioSettingsPanel(bool isEnabled)
     {
-        _interactionBlocker.raycastTarget = false;
+        _pausePanel.interactable = !isEnabled;
+        _audioPanel.ToggleEnable();
+        _audioPanelAnimator.Play(isEnabled ? "PanelPopupAnimOn" : "PanelPopupAnimOff");
+    }
+
+    public void ButtonClickSFX()
+    {
+        _emitter.Emit(new AudioMessage("OnSFXRequested", AudioType.SFX, _audioData.ButtonClickSFX, false, null));
     }
 
     private IEnumerator TypeMessage(TextMeshProUGUI textUI, string message, float notificationLifetime = 0f)
