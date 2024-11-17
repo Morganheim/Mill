@@ -1,9 +1,6 @@
-using UnityEngine;
-
-[System.Serializable]
 public class GameEventMessage
 {
-    [field: SerializeField] public string EventName { get; private set; }
+    public string EventName { get; private set; }
 
     public GameEventMessage()
     {

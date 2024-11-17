@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class GameStateMessage : GameEventMessage
 {
     public GameStateType PreviousStateType { get; private set; }
