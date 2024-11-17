@@ -15,37 +15,43 @@ public class AudioManager : MonoBehaviour
     private HashSet<AudioPlayer> _availableAudioPlayerPool = new();
     private HashSet<AudioPlayer> _activeAudioPlayerPool = new();
 
-    private UnityEvent _onGameStart = new();
-    private UnityEvent _onGameClose = new();
+    private UnityEvent _onGameLoad = new();
+    private UnityEvent _onGameUnload = new();
+    private UnityEvent _onGameComplete = new();
 
     private void OnEnable()
     {
         SetupAudioManager();
 
-        PlayClip(_audioData.MainMenuMusic, _mixerMusicGroup, true, _onGameStart);
+        PlayClip(_audioData.MainMenuMusic, _mixerMusicGroup, true, _onGameLoad);
     }
 
     public void OnGameLoaded()
     {
         //stop main menu music
-        _onGameStart?.Invoke();
+        _onGameLoad?.Invoke();
 
         //play game music
-        PlayClip(_audioData.GameMusic, _mixerMusicGroup, true, _onGameClose);
+        PlayClip(_audioData.GameMusic, _mixerMusicGroup, true, _onGameComplete);
     }
 
     public void OnMainMenuRequested()
     {
         //stop game music
-        _onGameClose?.Invoke();
+        _onGameComplete?.Invoke();
 
         //play main menu music
-        PlayClip(_audioData.MainMenuMusic, _mixerMusicGroup, true, _onGameStart);
+        PlayClip(_audioData.MainMenuMusic, _mixerMusicGroup, true, _onGameLoad);
+    }
+
+    public void OnGameUnload()
+    {
+        _onGameUnload?.Invoke();
     }
 
     public void OnGameComplete(GameEventMessage gameEventMessage)
     {
-        _onGameClose?.Invoke();
+        _onGameComplete?.Invoke();
     }
 
     public void OnSFXRequested(GameEventMessage gameEventMessage)
@@ -56,7 +62,7 @@ public class AudioManager : MonoBehaviour
 
         AudioMixerGroup mixerGroup = message.AudioType.Equals(AudioType.SFX) ? _mixerSFXGroup : _mixerMusicGroup;
 
-        PlayClip(message.Clip, mixerGroup, message.IsLooping, message.OnStopLoopEvent);
+        PlayClip(message.Clip, mixerGroup, message.IsLooping, message.OnStopEvent);
     }
 
     public void OnVolumeChangeRequested(GameEventMessage gameEventMessage)
@@ -85,7 +91,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void PlayClip(AudioClip clip, AudioMixerGroup mixerGroup, bool isLooping = false, UnityEvent onStopLoop = null)
+    private void PlayClip(AudioClip clip, AudioMixerGroup mixerGroup, bool isLooping = false, UnityEvent onStopEvent = null)
     {
         if (_availableAudioPlayerPool.Count < 1)
         {
@@ -100,7 +106,9 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        AudioInfo info = new(clip, mixerGroup, isLooping, onStopLoop, ReturnToPool);
+        onStopEvent ??= _onGameUnload;
+
+        AudioInfo info = new(clip, mixerGroup, isLooping, onStopEvent, ReturnToPool);
         audioPlayer.Play(info);
     }
 
@@ -154,15 +162,15 @@ public struct AudioInfo
     public AudioClip Clip { get; private set; }
     public AudioMixerGroup MixerGroup { get; private set; }
     public bool IsLooping { get; private set; }
-    public UnityEvent OnStopLoop { get; private set; }
+    public UnityEvent OnStopEvent { get; private set; }
     public System.Action<AudioPlayer> OnCompleteAction { get; private set; }
 
-    public AudioInfo(AudioClip clip, AudioMixerGroup mixerGroup, bool isLooping, UnityEvent onStopLoop, System.Action<AudioPlayer> onCompleteAction)
+    public AudioInfo(AudioClip clip, AudioMixerGroup mixerGroup, bool isLooping, UnityEvent onStopEvent, System.Action<AudioPlayer> onCompleteAction)
     {
         Clip = clip;
         MixerGroup = mixerGroup;
         IsLooping = isLooping;
-        OnStopLoop = onStopLoop;
+        OnStopEvent = onStopEvent;
         OnCompleteAction = onCompleteAction;
     }
 
@@ -171,7 +179,7 @@ public struct AudioInfo
         Clip = audioInfo.Clip;
         MixerGroup = audioInfo.MixerGroup;
         IsLooping = audioInfo.IsLooping;
-        OnStopLoop = audioInfo.OnStopLoop;
+        OnStopEvent = audioInfo.OnStopEvent;
         OnCompleteAction = audioInfo.OnCompleteAction;
     }
 }

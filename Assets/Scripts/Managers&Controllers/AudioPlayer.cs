@@ -17,8 +17,7 @@ public class AudioPlayer : MonoBehaviour
         AudioSource.clip = _audioInfo.Clip;
         AudioSource.loop = _audioInfo.IsLooping;
 
-        if (_audioInfo.IsLooping && _audioInfo.OnStopLoop != null)
-            _audioInfo.OnStopLoop.AddListener(OnLoopStop);
+        _audioInfo.OnStopEvent.AddListener(OnStopEvent);
 
         AudioSource.Play();
 
@@ -31,17 +30,16 @@ public class AudioPlayer : MonoBehaviour
         AudioSource.Stop();
 
         AudioSource.clip = null;
-        //AudioSource.volume = 0;
         AudioSource.loop = false;
 
         _audioInfo.OnCompleteAction(this);
     }
 
-    private void OnLoopStop()
+    private void OnStopEvent()
     {
         AudioSource.loop = false;
 
-        _audioInfo.OnStopLoop.RemoveListener(OnLoopStop);
+        _audioInfo.OnStopEvent.RemoveListener(OnStopEvent);
 
         //stops audio immediately
         StopPlaying();

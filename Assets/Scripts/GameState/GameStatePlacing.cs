@@ -11,6 +11,9 @@ public class GameStatePlacing : BaseGameState
     {
         b_Message = $"Place a piece on the board.";
         b_GameStateManager.DisplayNotification(b_Message);
+
+        if (b_GameStateManager.HoveredNode != null && !b_GameStateManager.HoveredNode.IsOccupied())
+            b_GameStateManager.HoveredNode.BoardNode.ToggleHighlight(true, b_GameStateManager.CurrentPlayer.PieceColor);
     }
 
     public override void OnStateExit()
