@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1240e9ec6b3a2d4385cb2a158317b41, type: 3}
   m_Name: Player1Data
   m_EditorClassIdentifier: 
-  <PlayerName>k__BackingField: Player_1
-  <PieceColor>k__BackingField: {r: 0.6886792, g: 0.055224285, b: 0.055224285, a: 1}
+  <PlayerName>k__BackingField: Player One
+  <PieceColor>k__BackingField: {r: 0.75, g: 0, b: 0, a: 1}
+  <PieceColorIndex>k__BackingField: 0
   <MovementEffectSpeed>k__BackingField: 40

@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <PositionOffset>k__BackingField: 2
   <RingsAmount>k__BackingField: 3
-  <PiecesInitialAmount>k__BackingField: 4
-  <EnableDiagonalLines>k__BackingField: 1
-  <EnablePiecesAlwaysFly>k__BackingField: 0
-  <EnableMiddlePosition>k__BackingField: 0
+  <PiecesInitialAmount>k__BackingField: 9
+  <IsDiagonalBoardLinesEnabled>k__BackingField: 0
+  <IsPiecesFlyEnabled>k__BackingField: 0
+  <IsMiddlePositionEnabled>k__BackingField: 0
   <NotificationTypeSpeed>k__BackingField: 50
   <NotificationLifetime>k__BackingField: 4
-  <OwnedNodeHighlightTransparency>k__BackingField: 0.432
+  <OwnedNodeHighlightTransparency>k__BackingField: 0.45
+  <MusicVolume>k__BackingField: 1
+  <SFXVolume>k__BackingField: 1
+  <AudioPoolSize>k__BackingField: 15

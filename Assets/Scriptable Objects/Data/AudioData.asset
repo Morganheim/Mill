@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b3983e1f3cdd2a4f85e45b375132107, type: 3}
+  m_Name: AudioData
+  m_EditorClassIdentifier: 
+  <MainMenuMusic>k__BackingField: {fileID: 8300000, guid: 49f07718fcfa8194fa30673670fba8f1, type: 3}
+  <GameMusic>k__BackingField: {fileID: 8300000, guid: aa0db0b338db20649bbe19bf480bff75, type: 3}
+  <ButtonClickSFX>k__BackingField: {fileID: 8300000, guid: 4956c4d542e8de3448a3d9dbed9efb16, type: 3}
+  <PiecePlacementSFX>k__BackingField: {fileID: 8300000, guid: 86152fc9fd1536b46b47bda18f373702, type: 3}
+  <PieceMovementSFX>k__BackingField: {fileID: 8300000, guid: cc828db632fa0b442b28e28e48ede3e3, type: 3}
+  <PieceRemoveSFX>k__BackingField: {fileID: 8300000, guid: 5be1566ce5bfe044fb2af64ec9131013, type: 3}
+  <PieceSelectSFX>k__BackingField: {fileID: 8300000, guid: 97605e24ab571b142b4595f97bec20fd, type: 3}
+  <MillSFX>k__BackingField: {fileID: 8300000, guid: 2f767d3b514bea14e98ac2aab61f0bf5, type: 3}
+  <WinSFX>k__BackingField: {fileID: 8300000, guid: f5d455862f5eba14fab22af413a47ad5, type: 3}
+  <DrawSFX>k__BackingField: {fileID: 8300000, guid: bdc7ed522d3bb4648b474f702d541322, type: 3}
